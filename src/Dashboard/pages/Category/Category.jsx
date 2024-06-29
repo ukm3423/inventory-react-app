@@ -9,20 +9,20 @@ import ViewModal from './ViewModal';
 export default function Category() {
 
   const perPage = 10;
-  const API = `http://localhost:8080/masterservice/api/course`;
+  const API = `http://localhost:8080/masterservice/api/category`;
   const storedToken = localStorage.getItem('token');  // This is temporary solution 
 
 
   const [categoryName, setCategoryName] = useState('');
-  const [courseDuration, setDescription] = useState('');
+  const [description, setDescription] = useState('');
   const [categories, setCategory] = useState([]);
 
-  const [courseList, setCourseList] = useState([]);
+  const [categoryList, setcategoryList] = useState([]);
   const [pageCount, setPageCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(0); // Updated state for current page
 
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
-  const [courseIdToDelete, setCourseIdToDelete] = useState(null);
+  const [categoryIdToDelete, setcategoryIdToDelete] = useState(null);
   const [courseStatusToDelete, setCourseStatusToDelete] = useState(null);
 
 
@@ -30,22 +30,20 @@ export default function Category() {
   const [updateCourse, setUpdateCourse] = useState({});
 
   const [showViewModal, setShowViewModal] = useState(false);
-  const [viewCourse, setViewCourse] = useState({});
+  const [viewCategory, setViewCategory] = useState({});
 
   // * ====================================== Adding A New Course ======================================
 
   const handleAddCourse = async () => {
     try {
-      const response = await axios.post(`${API}/add`, { courseId, courseName, courseFee, courseDuration }, {
-        // headers: {
-        //   'Authorization': `Bearer ${storedToken}`
-        // }
+      const response = await axios.post(`${API}/add`, { categoryName, description }, {
+        headers: {
+          'Authorization': `Bearer ${storedToken}`
+        }
       });
-      setCourseName('');
-      setCourseDuration('');
-      setCourseFee('');
-      setCourseId('')
-      fetchCourseList();
+      setCategoryName('');
+      setDescription('');
+      fetchcategoryList();
       toast.success(response.data.message);
     } catch (error) {
       if (error.response && error.response.data && error.response.data.message) {
@@ -58,16 +56,16 @@ export default function Category() {
 
   // * ====================================== Course List Section Start ======================================
 
-  const fetchCourseList = async () => {
+  const fetchcategoryList = async () => {
     try {
       const response = await axios.get(`${API}/get-list?offset=${currentPage}&limit=${perPage} `, {
 
-        // headers: {
-        //   'Authorization': `Bearer ${storedToken}`
-        // }
+        headers: {
+          'Authorization': `Bearer ${storedToken}`
+        }
       });
 
-      setCourseList(response.data.data);
+      setcategoryList(response.data.data);
       setPageCount(response.data.totalPages); // Update pageCount with totalPages from response
     } catch (error) {
       console.error('Error fetching category list:', error);
@@ -75,7 +73,7 @@ export default function Category() {
   };
 
   useEffect(() => {
-    fetchCourseList();
+    fetchcategoryList();
   }, [currentPage]); // Trigger fetchCategoryList when currentPage changes
 
   const handlePageClick = ({ selected }) => {
@@ -85,33 +83,33 @@ export default function Category() {
   // * ====================================== Delete Section Start ======================================
   const handleDelete = async () => {
     try {
-      const response = await axios.delete(`${API}/delete/${courseIdToDelete}`, {
-        // headers: {
-        //   'Authorization': `Bearer ${storedToken}`
-        // }
+      const response = await axios.delete(`${API}/delete/${categoryIdToDelete}`, {
+        headers: {
+          'Authorization': `Bearer ${storedToken}`
+        }
       });
-      fetchCourseList();
+      fetchcategoryList();
       setShowConfirmationModal(false);
-      toast.success((courseStatusToDelete) ? "Course Deactivated." : "Course Activated.");
+      toast.success((courseStatusToDelete) ? "Category Deactivated." : "Category Activated.");
     } catch (error) {
       console.error('Error deleting category:', error);
     }
   };
 
-  const handleDeleteConfirmation = (courseId, status) => {
-    setCourseIdToDelete(courseId);
+  const handleDeleteConfirmation = (categoryId, status) => {
+    setcategoryIdToDelete(categoryId);
     setCourseStatusToDelete(status);
     setShowConfirmationModal(true);
   };
 
   // * ====================================== Update Section Start ======================================
 
-  const handleEdit = async (courseId) => {
+  const handleEdit = async (categoryId) => {
     try {
-      const response = await axios.get(`${API}/get/${courseId}`, {
-        // headers: {
-        //   'Authorization': `Bearer ${storedToken}`
-        // }
+      const response = await axios.get(`${API}/get/${categoryId}`, {
+        headers: {
+          'Authorization': `Bearer ${storedToken}`
+        }
       });
       setUpdateCourse(response.data.data);
       console.log(response.data.data);
@@ -124,14 +122,14 @@ export default function Category() {
 
   // * ====================================== View Section Start ======================================
 
-  const handleViewCourse = async (courseId) => {
+  const handleViewCategory = async (categoryId) => {
     try {
-      const response = await axios.get(`${API}/get/${courseId}`, {
-        // headers: {
-        //   'Authorization': `Bearer ${storedToken}`
-        // }
+      const response = await axios.get(`${API}/get/${categoryId}`, {
+        headers: {
+          'Authorization': `Bearer ${storedToken}`
+        }
       });
-      setViewCourse(response.data.data);
+      setViewCategory(response.data.data);
       console.log(response.data.data);
       setShowViewModal(true);
     } catch (error) {
@@ -144,32 +142,31 @@ export default function Category() {
   return (
     <div className="p-6 m-6 bg-white rounded-lg shadow-md">
       <div className="grid grid-cols-1 lg:grid-cols-1 gap-6">
-        <div className="flex justify-between items-center mb-4">
-          <h1 className="text-3xl font-semibold text-gray-800">Courses</h1>
-        </div>
 
-        <div className="mb-4">
+        <div className="container mx-auto py-8">
           <h2 className="text-2xl font-semibold mb-4 text-gray-800">Add New Category</h2>
-          <form className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <form className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2">
             <div>
-              <label htmlFor="courseId" className="text-gray-700 font-medium mb-2 block">Course ID</label>
+              <label htmlFor="categoryId" className="text-gray-700 font-medium mb-2 block">Category Name </label>
               <input
                 type="text"
                 id="categoryName"
-                value={courseId}
-                onChange={(e) => setCourseId(e.target.value)}
-                placeholder="Enter course id"
+                value={categoryName}
+                onChange={(e) => setCategoryName(e.target.value)}
+                placeholder="Enter Category Name "
+                required
                 className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-yellow-500  sm:text-sm"
+                
               />
             </div>
             <div>
-              <label htmlFor="courseName" className="text-gray-700 font-medium mb-2 block">Course Name</label>
+              <label htmlFor="categoryName" className="text-gray-700 font-medium mb-2 block">Description </label>
               <input
                 type="text"
                 id="description"
-                value={courseName}
-                onChange={(e) => setCourseName(e.target.value)}
-                placeholder="Enter course name"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Enter description"
                 className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-yellow-500 sm:text-sm"
               />
             </div>
@@ -185,7 +182,6 @@ export default function Category() {
               <thead className="bg-gray-100 uppercase">
                 <tr>
                   <th scope="col" className="px-6 py-2 text-left text-sm font-medium text-gray-500 tracking-wider">Sl. No.</th>
-                  <th className="px-6 py-2 text-left  text-sm font-medium text-gray-500  tracking-wider">Course-Id</th>
                   <th className="px-6 py-2 text-left  text-sm font-medium text-gray-500  tracking-wider">Course Name</th>
                   {/* <th className="px-6 py-2 text-left  text-sm font-medium text-gray-500  tracking-wider">Duration</th> */}
                   <th className="px-6 py-2 text-left  text-sm font-medium text-gray-500  tracking-wider">Status</th>
@@ -193,11 +189,10 @@ export default function Category() {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {courseList.map((course, index) => (
+                {categoryList.map((course, index) => (
                   <tr key={course.id} className="transition duration-300  ease-in-out hover:bg-gray-50">
                     <td className="px-6 py-2 text-gray-800 whitespace-nowrap">{index + 1 + currentPage * perPage}</td>
-                    <td className="px-6 py-2 text-gray-800 whitespace-nowrap">{course.courseId}</td>
-                    <td className="px-6 py-2 text-gray-800 whitespace-nowrap">{course.courseName}</td>
+                    <td className="px-6 py-2 text-gray-800 whitespace-nowrap">{course.categoryName}</td>
                     {/* <td className="px-6 py-2 text-gray-800 whitespace-nowrap">{course.duration}</td> */}
                     <td className="px-6 py-2 text-gray-800 whitespace-nowrap">
                       {course.status ? (
@@ -209,7 +204,7 @@ export default function Category() {
                     <td className="px-6 py-2 text-gray-800 whitespace-nowrap">
                       <div className="flex space-x-4">
                         <button
-                          onClick={() => handleViewCourse(course.id)}
+                          onClick={() => handleViewCategory(course.id)}
                           className="text-green-500 hover:text-green-700 transition duration-300 ease-in-out"
                         >
                           <FaEye />
@@ -251,7 +246,7 @@ export default function Category() {
           course={updateCourse}
           onClose={() => setShowUpdateModal(false)}
           onUpdate={() => {
-            fetchCourseList();
+            fetchcategoryList();
             toast.success("Course Updated Successfully.");
           }}
         />
@@ -261,7 +256,7 @@ export default function Category() {
       {/* Update Modal */}
       {showViewModal && (
         <ViewModal
-          course={viewCourse}
+          course={viewCategory}
           onClose={() => setShowViewModal(false)}
         />
       )}

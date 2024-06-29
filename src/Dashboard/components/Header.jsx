@@ -75,7 +75,7 @@ const Header = () => {
                     )}
 
 
-                    <h2 className="text-xl font-bold text-white z-10">Dashboard</h2>
+                    <h2 className="text-xl font-bold text-white z-10">Inventory Dashboard</h2>
                     <div className="flex items-center z-10 space-x-4">
                         {/* Search Bar (Desktop Only) */}
                         {!isMobile && (

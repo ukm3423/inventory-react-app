@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
-const ViewModal = ({ course, onClose }) => {
-    const [courseDetails, setCourseDetails] = useState(null);
+const ViewModal = ({ product, onClose }) => {
+    const [productDetails, setproductDetails] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
 
     const [modalOpen, setModalOpen] = useState(false);
@@ -24,15 +24,15 @@ const ViewModal = ({ course, onClose }) => {
     }, []);
 
     useEffect(() => {
-        setCourseDetails(course);
+        setproductDetails(product);
         setIsLoading(false);
-    }, [course]);
+    }, [product]);
 
     return (
         <div className={`fixed z-50 inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 p-4 sm:p-6 lg:p-8  ${onClose ? 'opacity-100 bg-gray-900 bg-opacity-50' : 'opacity-0 pointer-events-none'}`}>
             <div className={`bg-white w-full max-w-4xl rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300  ${modalOpen ? 'scale-100' : 'scale-90'}`}>
                 <div className="bg-gradient-to-r from-pink-400 to-red-500 px-4 py-4 sm:px-6 sm:py-5">
-                    <h3 className="text-lg leading-6 font-medium text-white">View Course Details</h3>
+                    <h3 className="text-lg leading-6 font-medium text-white">View product Details</h3>
                 </div>
                 <div className="bg-white p-4 sm:p-6">
                     {isLoading ? (
@@ -52,20 +52,32 @@ const ViewModal = ({ course, onClose }) => {
                                 </thead>
                                 <tbody className="bg-white divide-y divide-gray-200">
                                     <tr>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Course ID</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{courseDetails.courseId}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Product Code</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{productDetails.productCode}</td>
                                     </tr>
                                     <tr>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Course Name</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{courseDetails.courseName}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Product Name</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{productDetails.productName}</td>
                                     </tr>
                                     <tr>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Duration</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{courseDetails.duration}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Product Category</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{productDetails.category.categoryName}</td>
                                     </tr>
                                     <tr>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Fee</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{courseDetails.fee}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Price</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{productDetails.price}</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Status</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{productDetails.status}</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Creation Date</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{productDetails.createdAt}</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Updation Date</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{productDetails.updatedAt}</td>
                                     </tr>
                                 </tbody>
                             </table>

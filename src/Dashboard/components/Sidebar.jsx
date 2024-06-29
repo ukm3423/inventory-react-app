@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTachometerAlt, faBook, faUserGraduate, faChalkboardTeacher, faCog, faCertificate } from '@fortawesome/free-solid-svg-icons';
-import logo from "../../assets/sspl.png";
+import logo from "../assets/22.png";
 import { useAuth } from '../../auth/AuthContext';
 
 const Sidebar = ({ isOpen, closeSidebar }) => {
@@ -16,7 +16,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
     };
     return (
         <div
-            className={`fixed h-full md:relative z-50 top-0 left-0 ${isOpen ? 'w-64' : 'w-0'} overflow-hidden transition-all duration-100 md:w-64`}
+            className={`fixed h-full md:relative z-50 top-0 left-0 ${isOpen ? 'w-64' : 'w-0'} overflow-hidden transition-all duration-300 md:w-64`}
             style={{
                 backgroundImage: 'url(https://images.unsplash.com/photo-1596597937550-d10c69e6411f?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwcm9maWxlLXBhZ2V8MXx8fGVufDB8fHx8fA%3D%3D)',
                 backgroundSize: 'cover',
@@ -31,7 +31,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                     <img
                         src={logo}
                         alt="Company Logo"
-                        className="w-20 mx-auto mb-4 rounded-full shadow-lg transform hover:scale-105 transition duration-300" />
+                        className="w-25 mx-auto mb-4 rounded-full shadow-lg transform hover:scale-105 transition duration-300" />
                     <h2 className="text-xl text-white font-bold">Sparrow Softech</h2>
                 </div>
                 <hr className="border-t border-gray-500 mb-4" />
@@ -41,7 +41,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                             exact
                             to="/"
                             className={({ isActive }) =>
-                                `text-white flex items-center rounded-lg px-4 py-2 transition-all duration-300 transform ${isActive ? 'bg-gradient-to-r from-[#ff416c] to-[#ff4b2b] shadow-2xl scale-110' : 'hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg hover:scale-105'}`
+                                `text-white flex items-center rounded-lg px-4 py-2 transition-all duration-300 transform ${isActive ? 'bg-gradient-to-r from-[#ff416c] to-[#ff4b2b] shadow-2xl scale-105' : 'hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg '}`
                             }
                             onClick={closeSidebar}
                         >
@@ -95,8 +95,8 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                             <li className="py-2">
                                 <div
                                     className={`text-white flex items-center rounded-lg px-4 py-2 cursor-pointer transition-all duration-300 transform ${isMasterOpen
-                                        ? 'bg-gradient-to-r from-[#ff416c] to-[#ff4b2b] shadow-2xl scale-110'
-                                        : 'hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg hover:scale-105'
+                                        ? 'bg-gradient-to-r from-[#ff416c] to-[#ff4b2b] shadow-2xl scale-105'
+                                        : 'hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg '
                                         }`}
                                     onClick={toggleMaster}
                                 >
@@ -126,7 +126,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                                                 className="text-white flex items-center rounded-lg px-4 py-2 hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg hover:scale-105"
                                                 onClick={closeSidebar}
                                             >
-                                                Category
+                                                    Category
                                             </NavLink>
                                         </li>
                                         <li className="py-2">
@@ -178,7 +178,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                         <NavLink
                             to="/settings"
                             className={({ isActive }) =>
-                                `text-white flex items-center rounded-lg px-4 py-2 transition-all duration-300 transform ${isActive ? 'bg-gradient-to-r from-[#ff416c] to-[#ff4b2b] shadow-2xl scale-110' : 'hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg hover:scale-105'}`
+                                `text-white flex items-center rounded-lg px-4 py-2 transition-all duration-300 transform ${isActive ? 'bg-gradient-to-r from-[#ff416c] to-[#ff4b2b] shadow-2xl scale-105' : 'hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg '}`
                             }
                             onClick={closeSidebar}
                         >
