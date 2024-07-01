@@ -150,6 +150,18 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                                     </ul>
                                 )}
                             </li>
+                            <li className="py-2">
+                                <NavLink
+                                    to="/orders"
+                                    className={({ isActive }) =>
+                                        `text-white flex items-center rounded-lg px-4 py-2   transition-all duration-300 transform ${isActive ? 'bg-gradient-to-r from-[#ff416c] to-[#ff4b2b] shadow-2xl' : 'hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg hover:scale-105'}`
+                                    }
+                                    onClick={closeSidebar}
+                                >
+                                    <FontAwesomeIcon icon={faUserGraduate} className="mr-3 text-lg" />
+                                    <span className="flex-1">Orders</span>
+                                </NavLink>
+                            </li>
                         </>
                     )}
 

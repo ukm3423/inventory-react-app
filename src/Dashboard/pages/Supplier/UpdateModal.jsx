@@ -30,7 +30,7 @@ const UpdateModal = ({ supplier, onClose, onUpdate }) => {
     const handleUpdate = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.put(`http://localhost:8080/masterservice/api/supplier/update/${supplier.id}`, {
+            const response = await axios.put(`http://192.168.1.90:8082/masterservice/api/supplier/update/${supplier.id}`, {
                 emailAddress: emailAddress,
                 supplierName: supplierName,
                 phone: phone,

@@ -28,7 +28,7 @@ const UpdateModal = ({ course, onClose, onUpdate }) => {
     const handleUpdate = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.put(`http://localhost:8080/masterservice/api/category/update/${course.id}`, {
+            const response = await axios.put(`http://192.168.1.90:8082/masterservice/api/category/update/${course.id}`, {
 
                 categoryName: categoryName,
                 description: description
@@ -67,14 +67,14 @@ const UpdateModal = ({ course, onClose, onUpdate }) => {
             <div className={`bg-white w-full max-w-md shadow-lg transform transition-transform description-300 ${modalOpen ? 'scale-100' : 'scale-90'}`}>
 
                 <div className="bg-gradient-to-r from-pink-400 to-red-500 px-4 py-3 sm:px-6">
-                    <h3 className="text-lg leading-6 font-medium text-white">Update Course</h3>
+                    <h3 className="text-lg leading-6 font-medium text-white">Update Category</h3>
                 </div>
                 <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                     <form onSubmit={handleUpdate}>
                         <div className="sm:items-start">
                             
                             <div className="mb-4">
-                                <label htmlFor="categoryName" className="block text-sm font-medium text-gray-700">Course Name</label>
+                                <label htmlFor="categoryName" className="block text-sm font-medium text-gray-700">Category Name</label>
                                 <input
                                     type="text"
                                     id="categoryName"
@@ -83,7 +83,7 @@ const UpdateModal = ({ course, onClose, onUpdate }) => {
                                     className="mt-1 px-4 py-1 border border-gray-300 rounded-md w-full focus:outline-none focus:border-yellow-500 transition description-150 ease-in-out" />
                             </div>
                             <div className="mb-4">
-                                <label htmlFor="description" className="block text-sm font-medium text-gray-700">description</label>
+                                <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
                                 <input
                                     type="text"
                                     id="description"

@@ -25,22 +25,22 @@ export default function Overview() {
     <div className="p-4 space-y-8">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <div className="p-4 bg-white rounded-lg shadow-md">
-          <h3 className="text-lg font-semibold">Total Students</h3>
+          <h3 className="text-lg font-semibold">Total Category</h3>
           <p className="text-2xl font-semibold">320</p>
         </div>
         <div className="p-4 bg-white rounded-lg shadow-md">
-          <h3 className="text-lg font-semibold">Total Courses</h3>
+          <h3 className="text-lg font-semibold">Total Products</h3>
           <p className="text-2xl font-semibold">45</p>
         </div>
         <div className="p-4 bg-white rounded-lg shadow-md">
-          <h3 className="text-lg font-semibold">Total Instructors</h3>
+          <h3 className="text-lg font-semibold">Total Orders</h3>
           <p className="text-2xl font-semibold">15</p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <div className="p-4 bg-white rounded-lg shadow-md">
-          <h3 className="text-lg font-semibold mb-4">Monthly Student Enrollment</h3>
+          <h3 className="text-lg font-semibold mb-4">Monthly Order Report</h3>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={data}>
               <CartesianGrid strokeDasharray="3 3" />
@@ -54,7 +54,7 @@ export default function Overview() {
           </ResponsiveContainer>
         </div>
         <div className="p-4 bg-white rounded-lg shadow-md">
-          <h3 className="text-lg font-semibold mb-4">Course Distribution</h3>
+          <h3 className="text-lg font-semibold mb-4">Order Distribution</h3>
           <ResponsiveContainer width="100%" height={300}>
             <PieChart>
               <Pie data={pieData} cx="50%" cy="50%" outerRadius={100} fill="#8884d8" dataKey="value" label>
@@ -70,7 +70,7 @@ export default function Overview() {
       </div>
 
       <div className="p-4 bg-white rounded-lg shadow-md">
-        <h3 className="text-lg font-semibold mb-4">Courses by Month</h3>
+        <h3 className="text-lg font-semibold mb-4">Order by Month</h3>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={data}>
             <CartesianGrid strokeDasharray="3 3" />

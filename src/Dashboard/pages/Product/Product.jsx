@@ -30,7 +30,7 @@ const Product = () => {
 
 
   const perPage = 100;
-  const API = `http://localhost:8080/masterservice/api/products`;
+  const API = `http://192.168.1.90:8082/masterservice/api/products`;
   const storedToken = localStorage.getItem('token');
 
   useEffect(() => {
@@ -40,7 +40,7 @@ const Product = () => {
 
   const fetchCategoryList = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/masterservice/api/category/get-list`);
+      const response = await axios.get(`http://192.168.1.90:8082/masterservice/api/category/get-list`);
       setCategoryList(response.data);
 
     } catch (error) {
@@ -257,23 +257,6 @@ const Product = () => {
               </table>
             </div>
           </div>
-
-          {/* <div className="mt-4">
-            <ReactPaginate
-              previousLabel={'Previous'}
-              nextLabel={'Next'}
-              breakLabel={'...'}
-              pageCount={pageCount}
-              marginPagesDisplayed={2}
-              pageRangeDisplayed={5}
-              onPageChange={handlePageClick}
-              containerClassName={'pagination flex justify-center'}
-              activeClassName={'bg-blue-500 text-white'}
-              previousClassName={'px-3 py-1 bg-gray-200 rounded-md mr-2 hover:bg-gray-300'}
-              nextClassName={'px-3 py-1 bg-gray-200 rounded-md ml-2 hover:bg-gray-300'}
-              disabledClassName={'px-3 py-1 bg-gray-200 rounded-md mr-2'}
-            />
-          </div> */}
         </div>
 
         <ConfirmationModal

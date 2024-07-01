@@ -18,6 +18,7 @@ import OTPPage from './Dashboard/pages/Student/OTPPage';
 import Category from './Dashboard/pages/Category/Category';
 import Product from './Dashboard/pages/Product/Product';
 import Supplier from './Dashboard/pages/Supplier/Supplier';
+import Order from './Dashboard/pages/Order/Order';
 
 function AppContent() {
   const location = useLocation();
@@ -62,6 +63,8 @@ function AppContent() {
                 <Route path="/categories" element={<ProtectedRoute allowedRoles={['admin']}><Category /></ProtectedRoute>} />
                 <Route path="/suppliers" element={<ProtectedRoute allowedRoles={['admin']}><Supplier /></ProtectedRoute>} />
                 <Route path="/products" element={<ProtectedRoute allowedRoles={['admin']}><Product /></ProtectedRoute>} />
+                <Route path="/orders" element={<ProtectedRoute allowedRoles={['admin']}><Order /></ProtectedRoute>} />
+
 
                 
               </>

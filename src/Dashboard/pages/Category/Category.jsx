@@ -9,7 +9,7 @@ import ViewModal from './ViewModal';
 export default function Category() {
 
   const perPage = 10;
-  const API = `http://localhost:8080/masterservice/api/category`;
+  const API = `http://192.168.1.90:8082/masterservice/api/category`;
   const storedToken = localStorage.getItem('token');  // This is temporary solution 
 
 
@@ -247,7 +247,7 @@ export default function Category() {
           onClose={() => setShowUpdateModal(false)}
           onUpdate={() => {
             fetchcategoryList();
-            toast.success("Course Updated Successfully.");
+            toast.success("Category Updated Successfully.");
           }}
         />
       )}
