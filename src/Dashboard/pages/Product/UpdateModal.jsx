@@ -80,7 +80,7 @@ const UpdateModal = ({ product, onClose, categoryList, onUpdate }) => {
                             {categoryList && categoryList.data && (
                                 <div className='mb-4'>
                                     <label htmlFor="category" className="block text-sm font-medium text-gray-700">Category</label>
-                                    <select id="category" value={product.category.id} onChange={(e) => setCategoryId(e.target.value)} className="mt-1 px-4 py-1.5 border border-gray-300 rounded-md w-full sm:text-sm focus:outline-none focus:border-yellow-500 transition price-150 ease-in-out" required>
+                                    <select id="category" value={categoryId} onChange={(e) => setCategoryId(e.target.value)} className="mt-1 px-4 py-1.5 border border-gray-300 rounded-md w-full sm:text-sm focus:outline-none focus:border-yellow-500 transition price-150 ease-in-out" required>
                                         <option value="">Select Category</option>
                                         {categoryList.data.map((category) => (
                                             <option key={category.id} value={category.id}>{category.categoryName}</option>

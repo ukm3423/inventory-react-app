@@ -153,7 +153,7 @@ const Product = () => {
         <div className="container mx-auto py-8">
           <h2 className="text-2xl font-semibold mb-4">Add Product</h2>
           <form onSubmit={handleSubmit} className="mb-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               {categoryList && categoryList.data && (
                 <div>
                   <label htmlFor="category" className="block text-sm font-medium text-gray-700">Category</label>
@@ -168,7 +168,9 @@ const Product = () => {
               <div>
                 <label htmlFor="productCode" className="block text-sm font-medium text-gray-700">Product Code</label>
                 <input type="text" id="productCode" value={productCode} onChange={(e) => setProductCode(e.target.value)}
-                  className="mt-1 px-4 py-2 border border-gray-300 rounded-md w-full sm:text-sm" required />
+                  className="mt-1 px-4 py-2 border border-gray-300 rounded-md w-full sm:text-sm"
+                  placeholder='Enter Product Code'
+                  required />
               </div>
               <div>
                 <label htmlFor="productName" className="block text-sm font-medium text-gray-700">Product Name</label>
@@ -177,11 +179,19 @@ const Product = () => {
                   id="productName"
                   value={productName}
                   onChange={(e) => setProductName(e.target.value)}
-                  className="mt-1 px-4 py-2 border border-gray-300 rounded-md w-full sm:text-sm" required />
+                  className="mt-1 px-4 py-2 border border-gray-300 rounded-md w-full sm:text-sm"
+                  placeholder='Enter Product Name'
+                  required />
               </div>
               <div>
                 <label htmlFor="price" className="block text-sm font-medium text-gray-700">Price</label>
-                <input type="number" id="price" value={price} onChange={(e) => setPrice(e.target.value)} className="mt-1 px-4 py-2 border border-gray-300 rounded-md w-full sm:text-sm" required />
+                <input
+                  type="number"
+                  id="price"
+                  value={price} onChange={(e) => setPrice(e.target.value)} 
+                  className="mt-1 px-4 py-2 border border-gray-300 rounded-md w-full sm:text-sm" 
+                  placeholder='Enter Product Price'
+                  required />
               </div>
               {/* <div>
                 <label htmlFor="image" className="block text-sm font-medium text-gray-700">Product Image</label>

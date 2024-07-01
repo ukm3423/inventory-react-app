@@ -29,7 +29,7 @@ const ConfirmationModal = ({ isOpen, onCancel, onConfirm, status }) => {
             <div className={`bg-white w-full max-w-md p-8 rounded-lg shadow-lg transform transition-transform duration-300 ${modalOpen ? 'scale-100' : 'scale-90'}`}>
                 <h2 className="text-2xl font-semibold mb-4 text-gray-800">Confirmation </h2>
                 <p className="text-gray-700 mb-6">
-                    {status ? 'Are you sure you want to deactivate this course?' : 'Do you want to activate this course?'}
+                    {status ? 'Are you sure you want to deactivate this supplier?' : 'Do you want to activate this supplier?'}
                 </p>
                 <div className="flex justify-end">
                     <button onClick={onCancel} className="px-4 py-2 mr-4 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition-colors duration-300 ease-in-out">

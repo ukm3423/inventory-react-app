@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTachometerAlt, faBook, faUserGraduate, faChalkboardTeacher, faCog, faCertificate } from '@fortawesome/free-solid-svg-icons';
 import logo from "../assets/22.png";
@@ -8,7 +8,7 @@ import { useAuth } from '../../auth/AuthContext';
 const Sidebar = ({ isOpen, closeSidebar }) => {
     const { role } = useAuth();
     const { name } = useAuth();
-
+    const location = useLocation();
     const [isMasterOpen, setIsMasterOpen] = useState(false); // State to manage dropdown
 
     const toggleMaster = () => {
@@ -41,7 +41,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                             exact
                             to="/"
                             className={({ isActive }) =>
-                                `text-white flex items-center rounded-lg px-4 py-2 transition-all duration-300 transform ${isActive ? 'bg-gradient-to-r from-[#ff416c] to-[#ff4b2b] shadow-2xl scale-105' : 'hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg '}`
+                                `text-white flex items-center rounded-lg px-4 py-2 transition-all duration-300 transform ${isActive ? 'bg-gradient-to-r from-[#ff416c] to-[#ff4b2b] shadow-2xl ' : 'hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg '}`
                             }
                             onClick={closeSidebar}
                         >
@@ -95,7 +95,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                             <li className="py-2">
                                 <div
                                     className={`text-white flex items-center rounded-lg px-4 py-2 cursor-pointer transition-all duration-300 transform ${isMasterOpen
-                                        ? 'bg-gradient-to-r from-[#ff416c] to-[#ff4b2b] shadow-2xl scale-105'
+                                        ? 'bg-gradient-to-r from-[#ff416c] to-[#ff4b2b] shadow-2xl '
                                         : 'hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg '
                                         }`}
                                     onClick={toggleMaster}
@@ -123,7 +123,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                                         <li className="py-2">
                                             <NavLink
                                                 to="/categories"
-                                                className="text-white flex items-center rounded-lg px-4 py-2 hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg hover:scale-105"
+                                                className={` flex items-center rounded-lg px-4 py-1.5 hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg  ${location.pathname === '/categories' ? 'bg-white text-gray-900 rounded-md' : 'text-white'}`}
                                                 onClick={closeSidebar}
                                             >
                                                     Category
@@ -132,7 +132,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                                         <li className="py-2">
                                             <NavLink
                                                 to="/products"
-                                                className="text-white flex items-center rounded-lg px-4 py-2 hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg hover:scale-105"
+                                                className={` flex items-center rounded-lg px-4 py-1.5 hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg  ${location.pathname === '/products' ? 'bg-white text-gray-900 rounded-md' : 'text-white'}`}
                                                 onClick={closeSidebar}
                                             >
                                                 Product
@@ -141,7 +141,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                                         <li className="py-2">
                                             <NavLink
                                                 to="/suppliers"
-                                                className="text-white flex items-center rounded-lg px-4 py-2 hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg hover:scale-105"
+                                                className={` flex items-center rounded-lg px-4 py-1.5 hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg  ${location.pathname === '/suppliers' ? 'bg-white text-gray-900 rounded-md' : 'text-white'}`}
                                                 onClick={closeSidebar}
                                             >
                                                 Supplier
@@ -178,7 +178,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                         <NavLink
                             to="/settings"
                             className={({ isActive }) =>
-                                `text-white flex items-center rounded-lg px-4 py-2 transition-all duration-300 transform ${isActive ? 'bg-gradient-to-r from-[#ff416c] to-[#ff4b2b] shadow-2xl scale-105' : 'hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg '}`
+                                `text-white flex items-center rounded-lg px-4 py-2 transition-all duration-300 transform ${isActive ? 'bg-gradient-to-r from-[#ff416c] to-[#ff4b2b] shadow-2xl ' : 'hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg '}`
                             }
                             onClick={closeSidebar}
                         >

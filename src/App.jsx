@@ -16,8 +16,8 @@ import AdminLogin from './Dashboard/pages/Login';
 import StudentLogin from './Dashboard/pages/Student/StudentLogin';
 import OTPPage from './Dashboard/pages/Student/OTPPage';
 import Category from './Dashboard/pages/Category/Category';
-import Supplier from './Dashboard/pages/Supplier/Courses';
 import Product from './Dashboard/pages/Product/Product';
+import Supplier from './Dashboard/pages/Supplier/Supplier';
 
 function AppContent() {
   const location = useLocation();
