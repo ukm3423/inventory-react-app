@@ -31,7 +31,7 @@ const UpdateModal = ({ product, onClose, categoryList, onUpdate }) => {
     const handleUpdate = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.put(`http://192.168.1.90:8082/masterservice/api/products/update/${product.id}`, {
+            const response = await axios.put(`http://localhost:8080/masterservice/api/products/update/${product.id}`, {
                 productCode: productCode,
                 productName: productName,
                 price: price,

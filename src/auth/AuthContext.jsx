@@ -33,7 +33,7 @@ export function AuthProvider({ children }) {
 
   const validateToken = async (token) => {
     try {
-      const response = await axios.get('http://192.168.1.90:8081/authservice/api/check-validity', {
+      const response = await axios.get('http://localhost:8080/authservice/api/check-validity', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -75,7 +75,7 @@ export function AuthProvider({ children }) {
 
   const logout = async () => {
     try {
-      await axios.post('http://192.168.1.90:8081/authservice/api/log-out', {}, {
+      await axios.post('http://localhost:8080/authservice/api/log-out', {}, {
         headers: {
           'Authorization': `Bearer ${storedToken}`
         }

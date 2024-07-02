@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../auth/AuthContext';
-import logo from '../assets/sspl.png'; // Ensure you have a logo in your assets folder
+import logo from '../assets/agg.png'; // Ensure you have a logo in your assets folder
 import { ClipLoader, RingLoader, RotateLoader, ScaleLoader } from 'react-spinners'; // Import a premium spinner
 import axios from 'axios';
 import background from '../assets/iStock-1024926532.webp';
 function AdminLogin() {
-  const API = "http://192.168.1.90:8081/authservice/api";
+  // const API = "http://192.168.1.90:8081/authservice/api";
+  const API = "http://localhost:8080/authservice/api";
+
   const nav = useNavigate();
   const { login } = useAuth();
   const [formData, setFormData] = useState({
@@ -75,10 +77,14 @@ function AdminLogin() {
       style={{ backgroundImage: `url(${background})` }}>
       <div className="absolute inset-0 bg-black opacity-50"></div>
       <div className="md:mt-0 max-w-md w-full space-y-8 p-6 sm:p-8 bg-white bg-opacity-95 rounded-lg shadow-lg border border-gray-500 relative z-10">
-        <div className="flex items-center justify-center h-full mb-5">
-          <img src={logo} alt="Quick Computer Logo" className="h-16 w-16 sm:h-20 sm:w-20 rounded-full" />
+        <div className="mb-4 text-center">
+          <img
+            src={logo}
+            alt="Company Logo"
+            className="w-28 h-28 mx-auto rounded-full"
+          />
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 text-center mb-6 sm:mb-8">Inventory Login </h2>
         </div>
-        <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 text-center mb-6 sm:mb-8">Inventory Login </h2>
         <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">
@@ -160,7 +166,7 @@ function AdminLogin() {
           onClick={handleBackToWebsite}
           className="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
         >
-          Create a new Account 
+          Create a new Account
         </button>
 
         <div className="mt-6">

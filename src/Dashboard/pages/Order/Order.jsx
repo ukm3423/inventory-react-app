@@ -16,15 +16,17 @@ const Order = () => {
   const [categoryId, setCategoryId] = useState('');
   const [supplierId, setSupplierId] = useState('');
   const [productId, setProductId] = useState('');
+  const [categoryName, setCategoryName] = useState('');
+  const [productName, setProductName] = useState('');
 
 
   const [quantity, setQuantity] = useState('');
   const [rate, setRate] = useState('');
 
-  
+
   const [setList, setProductDetailsList] = useState([]);
 
-  const [categoryList, setCategoryList] = useState([]);
+  const [categoryList, setCategoryList] = useState([]); // Initialize as null
   const [supplierList, setSupplierList] = useState([]);
 
   const [productList, setProductList] = useState([]);
@@ -44,7 +46,9 @@ const Order = () => {
 
 
   const perPage = 100;
-  const API = `http://192.168.1.90:8082/masterservice/api/Orders`;
+  // const API = `http://localhost:8080/masterservice/api/Orders`;
+  const API = `http://localhost:8080/masterservice/api/products`;
+
   const storedToken = localStorage.getItem('token');
 
   const [date, setDate] = useState('');
@@ -59,34 +63,44 @@ const Order = () => {
     setDate(currentDate);
 
     fetchCategoryList();
-    fetchProductList();
+    // fetchProductList();
     fetchSupplierList();
     fetchOrderList();
   }, []);
 
   const fetchCategoryList = async () => {
     try {
-      const response = await axios.get(`http://192.168.1.90:8082/masterservice/api/category/get-list`);
-      setCategoryList(response.data);
-
+      const response = await axios.get('http://localhost:8080/masterservice/api/category/get-categories');
+      setCategoryList(response.data.data);
+      console.log(categoryList);
     } catch (error) {
       console.error('Error fetching category list:', error);
     }
   };
 
-  const fetchProductList = async () => {
+  const fetchProductList = async (categoryId) => {
     try {
-      const response = await axios.get(`http://192.168.1.90:8082/masterservice/api/products/get-list`);
-      setProductList(response.data);
-
+      const response = await axios.get(`http://localhost:8080/masterservice/api/products/get-products/${categoryId}`);
+      setProductList(response.data.data);
+      console.log(productList);
     } catch (error) {
-      console.error('Error fetching category list:', error);
+      console.error('Error fetching product list:', error);
     }
   };
 
+  const handleCategoryChange = (e) => {
+    const selectedCategoryId = e.target.value;
+    setCategoryId(selectedCategoryId);
+    setProductId(''); // Reset productId when category changes
+    if (selectedCategoryId) {
+      fetchProductList(selectedCategoryId);
+    } else {
+      setProductList(null); // Clear product list if no category selected
+    }
+  };
   const fetchSupplierList = async () => {
     try {
-      const response = await axios.get(`http://192.168.1.90:8082/masterservice/api/supplier/get-list`);
+      const response = await axios.get(`http://localhost:8080/masterservice/api/supplier/get-list`);
       setSupplierList(response.data);
 
     } catch (error) {
@@ -201,17 +215,19 @@ const Order = () => {
       productId,
       quantity,
       rate,
+      categoryName,
+      productName
     };
     setProductDetailsList([...setList, product]);
-    
+
     // Clear fields after adding product
     setCategoryId('');
     setProductId('');
     setQuantity('');
     setRate('');
-    setOrderCode('');
-    setOrderName('');
-   
+    setProductName('');
+    setCategoryName('');
+
   };
   return (
     <div className="p-6 m-6 bg-white rounded-lg shadow-md">
@@ -269,24 +285,45 @@ const Order = () => {
               <h2 className="text-2xl font-semibold mb-4 text-gray-800 ">Product Details :-</h2>
 
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                {categoryList && categoryList.data && (
+                {categoryList && categoryList.length > 0 && ( // Check if categoryList is not null and is an array
                   <div>
-                    <label htmlFor="category" className="block text-sm font-medium text-gray-700">Category</label>
-                    <select id="category" value={categoryId} onChange={(e) => setCategoryId(e.target.value)} className="mt-1 px-4 py-2 border border-gray-300 rounded-md w-full sm:text-sm" required>
+                    <label htmlFor="category" className="block text-sm font-medium text-gray-700">
+                      Category
+                    </label>
+                    <select
+                      id="category"
+                      value={categoryId}
+                      onChange={handleCategoryChange}
+                      className="mt-1 px-4 py-2 border border-gray-300 rounded-md w-full sm:text-sm"
+                      required
+                    >
                       <option value="">Select Category</option>
-                      {categoryList.data.map((category) => (
-                        <option key={category.id} value={category.id}>{category.categoryName}</option>
+                      {categoryList.map((category) => (
+                        <option key={category.id} value={category.id}>
+                          {category.categoryName}
+                        </option>
                       ))}
                     </select>
                   </div>
                 )}
-                {productList && productList.data && (
+
+                {productList && (
                   <div>
-                    <label htmlFor="category" className="block text-sm font-medium text-gray-700">Product</label>
-                    <select id="category" value={productId} onChange={(e) => setProductId(e.target.value)} className="mt-1 px-4 py-2 border border-gray-300 rounded-md w-full sm:text-sm" required>
+                    <label htmlFor="product" className="block text-sm font-medium text-gray-700">
+                      Product
+                    </label>
+                    <select
+                      id="product"
+                      value={productId}
+                      onChange={(e) => setProductId(e.target.value)}
+                      className="mt-1 px-4 py-2 border border-gray-300 rounded-md w-full sm:text-sm"
+                      required
+                    >
                       <option value="">Select Product</option>
-                      {productList.data.map((product) => (
-                        <option key={product.id} value={product.id}>{product.productName}</option>
+                      {productList.map((product) => (
+                        <option key={product.id} value={product.id}>
+                          {product.productName}
+                        </option>
                       ))}
                     </select>
                   </div>
@@ -337,7 +374,7 @@ const Order = () => {
             <button type="submit" className="px-3 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 mt-4 uppercase">Submit</button>
           </form>
 
-          
+
 
           {/* <div className="mt-4">
             <ReactPaginate
