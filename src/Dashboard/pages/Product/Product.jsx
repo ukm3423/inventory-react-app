@@ -40,7 +40,7 @@ const Product = () => {
 
   const fetchCategoryList = async () => {
     try {
-      const response = await axios.get(`http://192.168.1.90:8082/masterservice/api/category/get-list`);
+      const response = await axios.get(`http://localhost:8080/masterservice/api/category/get-categories`);
       setCategoryList(response.data);
 
     } catch (error) {

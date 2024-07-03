@@ -20,11 +20,12 @@ const Order = () => {
   const [productName, setProductName] = useState('');
 
 
+
   const [quantity, setQuantity] = useState('');
   const [rate, setRate] = useState('');
 
 
-  const [setList, setProductDetailsList] = useState([]);
+  const [productDetailsList, setProductDetailsList] = useState([]);
 
   const [categoryList, setCategoryList] = useState([]); // Initialize as null
   const [supplierList, setSupplierList] = useState([]);
@@ -43,6 +44,7 @@ const Order = () => {
   const [showViewModal, setShowViewModal] = useState(false);
   const [viewOrder, setViewOrder] = useState({});
   const [OrderStatusToDelete, setOrderStatusToDelete] = useState(null);
+
 
 
   const perPage = 100;
@@ -68,6 +70,60 @@ const Order = () => {
     fetchOrderList();
   }, []);
 
+  // * ====================================== Add Product in List ====================================== 
+
+  const handleAddProduct = () => {
+    console.log('Category List:', categoryList);
+    console.log('Category Id:', categoryId);
+    console.log('Product List:', productList);
+    console.log('Product Id:', productId);
+
+    // Ensure categoryList and productList are not empty
+    if (!categoryList || categoryList.length === 0 || !productList || productList.length === 0) {
+      console.error('Category list or product list is empty');
+      return;
+    }
+
+    // Find selected category and product objects
+    const selectedCategory = categoryList.find(category => category.id == categoryId);
+    const selectedProduct = productList.find(product => product.id == productId);
+
+    if (!selectedCategory || !selectedProduct) {
+      console.error('Selected category or product not found');
+      return;
+    }
+
+    // Check if the product already exists in productDetailsList
+    const existingProduct = productDetailsList.find(product => product.categoryId == categoryId && product.productId == productId);
+
+    if (existingProduct) {
+      toast.error('Product already exists in List !!');
+      console.warn('Product already exists in the list');
+      return;
+    }
+
+    // Create product object with categoryName and productName
+    let product = {
+      categoryId,
+      categoryName: selectedCategory.categoryName,
+      productId,
+      productName: selectedProduct.productName,
+      quantity,
+      rate
+    };
+
+    console.log('Adding Product:', product);
+
+    setProductDetailsList([...productDetailsList, product]);
+
+    // Clear fields after adding product
+    setCategoryId('');
+    setProductId('');
+    setQuantity('');
+    setRate('');
+  };
+
+  // ===========================================================================================================================
   const fetchCategoryList = async () => {
     try {
       const response = await axios.get('http://localhost:8080/masterservice/api/category/get-categories');
@@ -122,9 +178,11 @@ const Order = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
 
-      const response = await axios.post(`${API}/add`, { OrderName, OrderCode, price, categoryId }, {
+
+      const response = await axios.post(`${API}/add`, { productDetailsList, supplierId, date }, {
         headers: {
           'Authorization': `Bearer ${storedToken}`
         }
@@ -206,34 +264,21 @@ const Order = () => {
     }
   };
 
-  // * ====================================== Add Product in List ====================================== 
 
-  // Handle adding a product to the list
-  const handleAddProduct = () => {
-    const product = {
-      categoryId,
-      productId,
-      quantity,
-      rate,
-      categoryName,
-      productName
-    };
-    setProductDetailsList([...setList, product]);
-
-    // Clear fields after adding product
-    setCategoryId('');
-    setProductId('');
-    setQuantity('');
-    setRate('');
-    setProductName('');
-    setCategoryName('');
+  // ====================================================
+  const calculateGrandTotal = () => {
+    let total = 0;
+    productDetailsList.forEach(product => {
+      total += product.quantity * product.rate;
+    });
+    return total;
 
   };
   return (
     <div className="p-6 m-6 bg-white rounded-lg shadow-md">
       <div className="grid grid-cols-1 lg:grid-cols-1 gap-6">
         <div className="flex justify-between items-center mb-4">
-          <h1 className="text-3xl font-semibold text-gray-800">Purchase Order</h1>
+          <h1 className="text-3xl font-bold text-center text-gray-700">Purchase Order :---</h1>
         </div>
         <div className="mb-4">
           <form onSubmit={handleSubmit} className="mb-8">
@@ -295,7 +340,7 @@ const Order = () => {
                       value={categoryId}
                       onChange={handleCategoryChange}
                       className="mt-1 px-4 py-2 border border-gray-300 rounded-md w-full sm:text-sm"
-                      required
+
                     >
                       <option value="">Select Category</option>
                       {categoryList.map((category) => (
@@ -317,7 +362,7 @@ const Order = () => {
                       value={productId}
                       onChange={(e) => setProductId(e.target.value)}
                       className="mt-1 px-4 py-2 border border-gray-300 rounded-md w-full sm:text-sm"
-                      required
+
                     >
                       <option value="">Select Product</option>
                       {productList.map((product) => (
@@ -330,17 +375,17 @@ const Order = () => {
                 )}
                 <div>
                   <label htmlFor="quantity" className="block text-sm font-medium text-gray-700">Quantity</label>
-                  <input type="number" id="quantity" value={quantity} onChange={(e) => setQuantity(e.target.value)} className="mt-1 px-4 py-2 border border-gray-300 rounded-md w-full sm:text-sm" placeholder="Enter Quantity" required />
+                  <input type="number" id="quantity" value={quantity} onChange={(e) => setQuantity(e.target.value)} className="mt-1 px-4 py-2 border border-gray-300 rounded-md w-full sm:text-sm" placeholder="Enter Quantity" />
                 </div>
                 <div>
                   <label htmlFor="rate" className="block text-sm font-medium text-gray-700">Rate</label>
-                  <input type="number" id="rate" value={rate} onChange={(e) => setRate(e.target.value)} className="mt-1 px-4 py-2 border border-gray-300 rounded-md w-full sm:text-sm" placeholder="Enter Rate" required />
+                  <input type="number" id="rate" value={rate} onChange={(e) => setRate(e.target.value)} className="mt-1 px-4 py-2 border border-gray-300 rounded-md w-full sm:text-sm" placeholder="Enter Rate" />
                 </div>
 
               </div>
             </div>
 
-            <button type="button" onClick={handleAddProduct} className="px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 mt-4">Add Product</button>
+            <button type="button" onClick={handleAddProduct} className="px-3 py-1.5 bg-blue-500 text-white rounded-md hover:bg-blue-600 mt-4">Add Product</button>
 
 
             <div className='mt-8'>
@@ -354,24 +399,59 @@ const Order = () => {
                       <th scope="col" className="px-6 py-2 text-left text-sm font-medium text-gray-500 tracking-wider">Quantity</th>
                       <th scope="col" className="px-6 py-2 text-left text-sm font-medium text-gray-500 tracking-wider">Rate</th>
                       <th scope="col" className="px-6 py-2 text-left text-sm font-medium text-gray-500 tracking-wider">Amount</th>
+                      <th className="px-6 py-2 text-left  text-sm font-medium text-gray-500  tracking-wider">Actions</th>
+
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
-                    {setList.map((product, index) => (
+                    {productDetailsList.map((product, index) => (
                       <tr key={index} className="transition duration-300  ease-in-out hover:bg-gray-50">
-                        <td className="px-6 py-2 text-gray-800 whitespace-nowrap">{product.categoryId}</td>
-                        <td className="px-6 py-2 text-gray-800 whitespace-nowrap">{product.productId}</td>
+                        <td className="px-6 py-2 text-gray-800 whitespace-nowrap">{product.categoryName}</td>
+                        <td className="px-6 py-2 text-gray-800 whitespace-nowrap">{product.productName}</td>
                         <td className="px-6 py-2 text-gray-800 whitespace-nowrap">{product.quantity}</td>
                         <td className="px-6 py-2 text-gray-800 whitespace-nowrap">{product.rate}</td>
                         <td className="px-6 py-2 text-gray-800 whitespace-nowrap">{product.quantity * product.rate}</td>
+                        <td className="px-6 py-2 text-gray-800 whitespace-nowrap">
+                          <div className="flex space-x-4">
+                            <button
+                              onClick={() => handleEdit(product.id)}
+                              className="text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out"
+                            >
+                              <FaEdit />
+                            </button>
+                            <button
+                              onClick={() => handleDeleteConfirmation(product.id, product.status)}
+                              className="text-red-500 hover:text-red-700 transition duration-300 ease-in-out"
+                            >
+                              <FaTrash />
+                            </button>
+                          </div>
+                        </td>
                       </tr>
                     ))}
                   </tbody>
+
+
                 </table>
+
+
+              </div>
+              <div className='mt-4'>
+                <tfoot>
+                  <tr className="bg-gray-100">
+                    <td colSpan="4" className="px-6 py-2 text-right text-lg font-semibold">Grand Total:</td>
+                    <td className="px-6 py-2 text-lg font-semibold">{calculateGrandTotal()}</td>
+                    <td></td> {/* Empty cell for Actions column alignment */}
+                  </tr>
+                </tfoot>
+              </div>
+              <div>
+                <button type="submit" className="px-3 py-2 bg-green-500 text-white font-semibold rounded-md hover:bg-green-600 mt-4 uppercase">Submit</button>
+
               </div>
             </div>
 
-            <button type="submit" className="px-3 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 mt-4 uppercase">Submit</button>
+
           </form>
 
 
