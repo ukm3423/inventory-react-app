@@ -22,7 +22,7 @@ const Order = () => {
 
 
   const [quantity, setQuantity] = useState('');
-  const [rate, setRate] = useState('');
+  const [rate, setRate] = useState(0);
 
 
   const [productDetailsList, setProductDetailsList] = useState([]);
@@ -49,7 +49,7 @@ const Order = () => {
 
   const perPage = 100;
   // const API = `http://localhost:8080/masterservice/api/Orders`;
-  const API = `http://localhost:8080/masterservice/api/products`;
+  const API = `http://localhost:8080/masterservice/api/order`;
 
   const storedToken = localStorage.getItem('token');
 
@@ -73,10 +73,6 @@ const Order = () => {
   // * ====================================== Add Product in List ====================================== 
 
   const handleAddProduct = () => {
-    console.log('Category List:', categoryList);
-    console.log('Category Id:', categoryId);
-    console.log('Product List:', productList);
-    console.log('Product Id:', productId);
 
     // Ensure categoryList and productList are not empty
     if (!categoryList || categoryList.length === 0 || !productList || productList.length === 0) {
@@ -120,7 +116,15 @@ const Order = () => {
     setCategoryId('');
     setProductId('');
     setQuantity('');
-    setRate('');
+    setRate(0);
+  };
+
+  // =============================================
+  const handleProductChange = (e) => {
+    const selectedProductId = e.target.value;
+    setProductId(selectedProductId);
+    const price = productList.find(product => product.id == selectedProductId).price;
+    setRate(price);
   };
 
   // ===========================================================================================================================
@@ -138,6 +142,7 @@ const Order = () => {
     try {
       const response = await axios.get(`http://localhost:8080/masterservice/api/products/get-products/${categoryId}`);
       setProductList(response.data.data);
+
       console.log(productList);
     } catch (error) {
       console.error('Error fetching product list:', error);
@@ -182,7 +187,7 @@ const Order = () => {
     try {
 
 
-      const response = await axios.post(`${API}/add`, { productDetailsList, supplierId, date }, {
+      const response = await axios.post(`${API}/place-order`, { productDetailsList, supplierId, date }, {
         headers: {
           'Authorization': `Bearer ${storedToken}`
         }
@@ -192,8 +197,9 @@ const Order = () => {
       setPrice('');
       setCategoryId('');
       // setImage(null);
-      toast.success(response.data.message);
-      fetchOrderList();
+      const orderNO = response.data.data.orderNumber;
+      toast.success(`Order Placed Successful! \nOrder No: ${orderNO}`);
+      setProductDetailsList([]);
     } catch (error) {
       if (error.response && error.response.data && error.response.data.message) {
         toast.error(error.response.data.message);
@@ -287,14 +293,14 @@ const Order = () => {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
               <div className="form-group">
                 <label htmlFor="orderId" className="block text-sm font-medium text-gray-700">
-                  Order Id
+                  Order Number
                 </label>
                 <input
                   type="text"
                   id="orderId"
                   // value={orderId}
                   className="mt-1 px-4 py-2 border border-gray-300 rounded-md w-full sm:text-sm"
-                  placeholder="Auto-generated Order Id"
+                  placeholder="Auto-generated Order Number"
                   disabled
                 />
               </div>
@@ -360,7 +366,7 @@ const Order = () => {
                     <select
                       id="product"
                       value={productId}
-                      onChange={(e) => setProductId(e.target.value)}
+                      onChange={handleProductChange}
                       className="mt-1 px-4 py-2 border border-gray-300 rounded-md w-full sm:text-sm"
 
                     >
@@ -373,14 +379,24 @@ const Order = () => {
                     </select>
                   </div>
                 )}
+
+                <div>
+                  <label htmlFor="rate" className="block text-sm font-medium text-gray-700">Rate</label>
+                  <input
+                    type="number"
+                    id="rate"
+                    value={rate}
+                    // onChange={(e) => setRate(e.target.value)}
+
+                    className="mt-1 px-4 py-2 border border-gray-300 rounded-md w-full sm:text-sm"
+                    disabled
+                  />
+                </div>
                 <div>
                   <label htmlFor="quantity" className="block text-sm font-medium text-gray-700">Quantity</label>
                   <input type="number" id="quantity" value={quantity} onChange={(e) => setQuantity(e.target.value)} className="mt-1 px-4 py-2 border border-gray-300 rounded-md w-full sm:text-sm" placeholder="Enter Quantity" />
                 </div>
-                <div>
-                  <label htmlFor="rate" className="block text-sm font-medium text-gray-700">Rate</label>
-                  <input type="number" id="rate" value={rate} onChange={(e) => setRate(e.target.value)} className="mt-1 px-4 py-2 border border-gray-300 rounded-md w-full sm:text-sm" placeholder="Enter Rate" />
-                </div>
+
 
               </div>
             </div>
