@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTachometerAlt, faBook, faUserGraduate, faChalkboardTeacher, faCog, faCertificate } from '@fortawesome/free-solid-svg-icons';
+import { faChalkboardTeacher, faTags, faBox, faUsers, faCog, faTachometerAlt, faList, faBold, faTableList } from '@fortawesome/free-solid-svg-icons';
 import logo from "../assets/agg.png";
 import bg from "../assets/bg.png";
 
@@ -11,11 +11,28 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
     const { role } = useAuth();
     const { name } = useAuth();
     const location = useLocation();
-    const [isMasterOpen, setIsMasterOpen] = useState(false); // State to manage dropdown
+    const [isMasterOpen, setIsMasterOpen] = useState(false);
+    const [isOrdersOpen, setIsOrdersOpen] = useState(false);
 
     const toggleMaster = () => {
         setIsMasterOpen(!isMasterOpen);
+        
+        // Close the Orders dropdown when opening Master
+        if (!isMasterOpen && isOrdersOpen) {
+            setIsOrdersOpen(false);
+        }
     };
+
+    const toggleOrders = () => {
+        setIsOrdersOpen(!isOrdersOpen);
+        // Close the Master dropdown when opening Orders
+        if (!isOrdersOpen && isMasterOpen) {
+            setIsMasterOpen(false);
+        }
+    };
+
+   
+
     return (
         <div
             className={`fixed h-full md:relative z-50 top-0 left-0 ${isOpen ? 'w-64' : 'w-0'} overflow-hidden transition-all duration-300 md:w-64`}
@@ -100,16 +117,15 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                             <li className="py-2">
                                 <div
                                     className={`text-white flex items-center rounded-lg px-4 py-2 cursor-pointer transition-all duration-300 transform ${isMasterOpen
-                                        ? 'bg-gradient-to-r from-[#ff416c] to-[#ff4b2b] shadow-2xl'
-                                        : 'hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg'
+                                            ? 'bg-gradient-to-r from-[#ff416c] to-[#ff4b2b] shadow-2xl'
+                                            : 'hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg'
                                         }`}
                                     onClick={toggleMaster}
                                 >
-                                    <FontAwesomeIcon icon={faChalkboardTeacher} className="mr-3 text-lg" />
+                                    <FontAwesomeIcon icon={faList} className="mr-3 text-lg" />
                                     <span className="flex-1">Master</span>
                                     <svg
-                                        className={`w-4 h-4 ml-auto transition-transform ${isMasterOpen ? 'transform rotate-90' : ''
-                                            }`}
+                                        className={`w-4 h-4 ml-auto transition-transform ${isMasterOpen ? 'transform rotate-90' : ''}`}
                                         fill="currentColor"
                                         viewBox="0 0 20 20"
                                         xmlns="http://www.w3.org/2000/svg"
@@ -122,50 +138,98 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                                     </svg>
                                 </div>
 
-                                {/* Dropdown items */}
+                                {/* Master dropdown items */}
                                 {isMasterOpen && (
                                     <ul className="pl-4 mt-2">
                                         <li className="py-2">
                                             <NavLink
                                                 to="/categories"
-                                                className={`flex items-center rounded-lg px-4 py-1.5 hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg ${location.pathname === '/categories' ? 'bg-white text-gray-900 rounded-md' : 'text-white'}`}
+                                                className={`flex items-center rounded-lg px-4 py-1.5 hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg ${location.pathname === '/categories' ? 'bg-white text-gray-900 rounded-md' : 'text-white'
+                                                    }`}
                                                 onClick={closeSidebar}
                                             >
+                                                <FontAwesomeIcon icon={faTags} className="mr-3" />
                                                 Category
                                             </NavLink>
                                         </li>
                                         <li className="py-2">
                                             <NavLink
                                                 to="/products"
-                                                className={`flex items-center rounded-lg px-4 py-1.5 hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg ${location.pathname === '/products' ? 'bg-white text-gray-900 rounded-md' : 'text-white'}`}
+                                                className={`flex items-center rounded-lg px-4 py-1.5 hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg ${location.pathname === '/products' ? 'bg-white text-gray-900 rounded-md' : 'text-white'
+                                                    }`}
                                                 onClick={closeSidebar}
                                             >
+                                                <FontAwesomeIcon icon={faBox} className="mr-3" />
                                                 Product
                                             </NavLink>
                                         </li>
                                         <li className="py-2">
                                             <NavLink
                                                 to="/suppliers"
-                                                className={`flex items-center rounded-lg px-4 py-1.5 hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg ${location.pathname === '/suppliers' ? 'bg-white text-gray-900 rounded-md' : 'text-white'}`}
+                                                className={`flex items-center rounded-lg px-4 py-1.5 hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg ${location.pathname === '/suppliers' ? 'bg-white text-gray-900 rounded-md' : 'text-white'
+                                                    }`}
                                                 onClick={closeSidebar}
                                             >
+                                                <FontAwesomeIcon icon={faUsers} className="mr-3" />
                                                 Supplier
                                             </NavLink>
                                         </li>
                                     </ul>
                                 )}
                             </li>
+
+                            {/* Orders dropdown */}
                             <li className="py-2">
-                                <NavLink
-                                    to="/orders"
-                                    className={({ isActive }) =>
-                                        `text-white flex items-center rounded-lg px-4 py-2 transition-all duration-300 transform ${isActive ? 'bg-gradient-to-r from-[#ff416c] to-[#ff4b2b] shadow-2xl' : 'hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg hover:scale-105'}`
-                                    }
-                                    onClick={closeSidebar}
+                                <div
+                                    className={`text-white flex items-center rounded-lg px-4 py-2 cursor-pointer transition-all duration-300 transform ${isOrdersOpen
+                                            ? 'bg-gradient-to-r from-[#ff416c] to-[#ff4b2b] shadow-2xl'
+                                            : 'hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg'
+                                        }`}
+                                    onClick={toggleOrders}
                                 >
-                                    <FontAwesomeIcon icon={faUserGraduate} className="mr-3 text-lg" />
-                                    <span className="flex-1">Orders</span>
-                                </NavLink>
+                                    <FontAwesomeIcon icon={faTableList} className="mr-3 text-lg" />
+                                    <span className="flex-1">Manage Orders</span>
+                                    <svg
+                                        className={`w-4 h-4 ml-auto transition-transform ${isOrdersOpen ? 'transform rotate-90' : ''}`}
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            fillRule="evenodd"
+                                            d="M6.293 5.293a1 1 0 011.414 0L10 8.586l2.293-2.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
+                                            clipRule="evenodd"
+                                        />
+                                    </svg>
+                                </div>
+
+                                {/* Orders dropdown items */}
+                                {isOrdersOpen && (
+                                    <ul className="pl-4 mt-2">
+                                        <li className="py-2">
+                                            <NavLink
+                                                to="/orders"
+                                                className={`flex items-center rounded-lg px-4 py-1.5 hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg ${location.pathname === '/orders' ? 'bg-white text-gray-900 rounded-md' : 'text-white'
+                                                    }`}
+                                                onClick={closeSidebar}
+                                            >
+                                                <FontAwesomeIcon icon={faTags} className="mr-3" />
+                                                Order Request
+                                            </NavLink>
+                                        </li>
+                                        <li className="py-2">
+                                            <NavLink
+                                                to="/order-list"
+                                                className={`flex items-center rounded-lg px-4 py-1.5 hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg ${location.pathname === '/order-list' ? 'bg-white text-gray-900 rounded-md' : 'text-white'
+                                                    }`}
+                                                onClick={closeSidebar}
+                                            >
+                                                <FontAwesomeIcon icon={faBox} className="mr-3" />
+                                                Order List
+                                            </NavLink>
+                                        </li>
+                                    </ul>
+                                )}
                             </li>
                         </>
                     )}

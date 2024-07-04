@@ -19,6 +19,7 @@ import Category from './Dashboard/pages/Category/Category';
 import Product from './Dashboard/pages/Product/Product';
 import Supplier from './Dashboard/pages/Supplier/Supplier';
 import Order from './Dashboard/pages/Order/Order';
+import OrderList from './Dashboard/pages/Order/OrderList';
 
 function AppContent() {
   const location = useLocation();
@@ -64,6 +65,7 @@ function AppContent() {
                 <Route path="/suppliers" element={<ProtectedRoute allowedRoles={['admin']}><Supplier /></ProtectedRoute>} />
                 <Route path="/products" element={<ProtectedRoute allowedRoles={['admin']}><Product /></ProtectedRoute>} />
                 <Route path="/orders" element={<ProtectedRoute allowedRoles={['admin']}><Order /></ProtectedRoute>} />
+                <Route path="/order-list" element={<ProtectedRoute allowedRoles={['admin']}><OrderList /></ProtectedRoute>} />
 
 
                 
