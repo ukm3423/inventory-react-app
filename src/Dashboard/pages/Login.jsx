@@ -6,8 +6,8 @@ import { ClipLoader, RingLoader, RotateLoader, ScaleLoader } from 'react-spinner
 import axios from 'axios';
 import background from '../assets/iStock-1024926532.webp';
 function AdminLogin() {
-  // const API = "http://192.168.1.90:8081/authservice/api";
-  const API = "http://localhost:8080/authservice/api";
+  const API = "http://192.168.1.90:8081/authservice/api";
+  // const API = "http://localhost:8080/authservice/api";
 
   const nav = useNavigate();
   const { login } = useAuth();

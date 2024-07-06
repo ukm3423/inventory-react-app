@@ -290,7 +290,7 @@ export default function OrderList() {
             {/* Update Modal */}
             {showViewModal && (
                 <ViewModal
-                    course={viewOrderList}
+                    order={viewOrderList}
                     onClose={() => setShowViewModal(false)}
                 />
             )}

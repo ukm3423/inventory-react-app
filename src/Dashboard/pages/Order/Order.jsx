@@ -88,6 +88,10 @@ const Order = () => {
       console.error('Selected category or product not found');
       return;
     }
+    if(quantity <= 0) {
+      toast.error('Please enter quantity !!!');
+      return;
+    }
 
     // Check if the product already exists in productDetailsList
     const existingProduct = productDetailsList.find(product => product.categoryId == categoryId && product.productId == productId);
