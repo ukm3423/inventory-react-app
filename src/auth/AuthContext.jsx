@@ -44,6 +44,7 @@ export function AuthProvider({ children }) {
         setIsAuthenticated(true);
         setToken(token);
         setRole(decodedToken.role);
+        // console.log("Role : ",role);
         setName(decodedToken.name);
       } else {
         setIsAuthenticated(false);

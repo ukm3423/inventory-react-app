@@ -37,19 +37,19 @@ const Order = () => {
   const [pageCount, setPageCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
-  const [OrderIdToDelete, setOrderIdToDelete] = useState(null);
+  const [OrderIdToDelete, setCategoryIdToDelete] = useState(null);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [updateOrder, setUpdateOrder] = useState({});
 
   const [showViewModal, setShowViewModal] = useState(false);
   const [viewOrder, setViewOrder] = useState({});
-  const [OrderStatusToDelete, setOrderStatusToDelete] = useState(null);
+  const [OrderStatusToDelete, setProductIdToDelete] = useState(null);
 
 
 
   const perPage = 100;
   // const API = `http://localhost:8080/masterservice/api/Orders`;
-  const API = `http://localhost:8080/masterservice/api/order`;
+  const API = `http://192.168.1.90:8082/masterservice/api/order`;
 
   const storedToken = localStorage.getItem('token');
 
@@ -134,7 +134,7 @@ const Order = () => {
   // ===========================================================================================================================
   const fetchCategoryList = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/masterservice/api/category/get-categories');
+      const response = await axios.get('http://192.168.1.90:8082/masterservice/api/category/get-categories');
       setCategoryList(response.data.data);
       console.log(categoryList);
     } catch (error) {
@@ -144,7 +144,7 @@ const Order = () => {
 
   const fetchProductList = async (categoryId) => {
     try {
-      const response = await axios.get(`http://localhost:8080/masterservice/api/products/get-products/${categoryId}`);
+      const response = await axios.get(`http://192.168.1.90:8082/masterservice/api/products/get-products/${categoryId}`);
       setProductList(response.data.data);
 
       console.log(productList);
@@ -165,7 +165,7 @@ const Order = () => {
   };
   const fetchSupplierList = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/masterservice/api/supplier/get-list`);
+      const response = await axios.get(`http://192.168.1.90:8082/masterservice/api/supplier/get-list`);
       setSupplierList(response.data);
 
     } catch (error) {
@@ -214,23 +214,33 @@ const Order = () => {
   };
 
   const handleDeleteConfirmation = (OrderId, status) => {
-    setOrderIdToDelete(OrderId);
-    setOrderStatusToDelete(status);
+    
+    setCategoryIdToDelete(OrderId);
+    setProductIdToDelete(status);
     setShowConfirmationModal(true);
 
   };
 
   // * ====================================== Delete Section Start ======================================
-  const handleDelete = async () => {
+  const handleDelete = async (e) => {
     try {
-      const response = await axios.delete(`${API}/delete/${OrderIdToDelete}`, {
-        headers: {
-          'Authorization': `Bearer ${storedToken}`
-        }
-      });
-      fetchOrderList();
-      setShowConfirmationModal(false);
-      toast.success((OrderStatusToDelete) ? "Category Deactivated." : "Category Activated.");
+      e.preventDefault(); // Prevent default form submission behavior (if applicable)
+      const existingProductIndex = productDetailsList.findIndex(product => product.categoryId == OrderIdToDelete && product.productId == OrderStatusToDelete);
+      if (existingProductIndex !== -1) {
+        // Remove item from productDetailsList
+        productDetailsList.splice(existingProductIndex, 1);
+        // Update state to reflect the deletion (assuming productDetailsList is a state variable)
+        setProductDetailsList([...productDetailsList]);
+  
+        setShowConfirmationModal(false);
+        toast.success(OrderStatusToDelete ? "Product Deleted." : "Something Went Wrong...");
+  
+        // Reset orderIdToDelete after successful deletion
+        setCategoryIdToDelete(null);
+        setProductIdToDelete(null);
+      } else {
+        console.log("Item not found in productDetailsList.");
+      }
     } catch (error) {
       console.error('Error deleting category:', error);
     }
@@ -433,14 +443,15 @@ const Order = () => {
                         <td className="px-6 py-2 text-gray-800 whitespace-nowrap">{product.quantity * product.rate}</td>
                         <td className="px-6 py-2 text-gray-800 whitespace-nowrap">
                           <div className="flex space-x-4">
-                            <button
+                            {/* <button
                               onClick={() => handleEdit(product.id)}
                               className="text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out"
                             >
                               <FaEdit />
-                            </button>
+                            </button> */}
                             <button
-                              onClick={() => handleDeleteConfirmation(product.id, product.status)}
+                              type='button'
+                              onClick={() => handleDeleteConfirmation(product.categoryId, product.productId)}
                               className="text-red-500 hover:text-red-700 transition duration-300 ease-in-out"
                             >
                               <FaTrash />

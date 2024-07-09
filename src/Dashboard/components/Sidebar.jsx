@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChalkboardTeacher, faTags, faBox, faUsers, faCog, faTachometerAlt, faList, faBold, faTableList } from '@fortawesome/free-solid-svg-icons';
+import { faChalkboardTeacher, faTags, faBox, faUsers, faCog, faTachometerAlt, faList, faBold, faTableList, faCertificate } from '@fortawesome/free-solid-svg-icons';
 import logo from "../assets/agg.png";
 import bg from "../assets/bg.png";
 
@@ -16,7 +16,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
 
     const toggleMaster = () => {
         setIsMasterOpen(!isMasterOpen);
-        
+
         // Close the Orders dropdown when opening Master
         if (!isMasterOpen && isOrdersOpen) {
             setIsOrdersOpen(false);
@@ -31,7 +31,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
         }
     };
 
-   
+
 
     return (
         <div
@@ -117,8 +117,8 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                             <li className="py-2">
                                 <div
                                     className={`text-white flex items-center rounded-lg px-4 py-2 cursor-pointer transition-all duration-300 transform ${isMasterOpen
-                                            ? 'bg-gradient-to-r from-[#ff416c] to-[#ff4b2b] shadow-2xl'
-                                            : 'hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg'
+                                        ? 'bg-gradient-to-r from-[#ff416c] to-[#ff4b2b] shadow-2xl'
+                                        : 'hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg'
                                         }`}
                                     onClick={toggleMaster}
                                 >
@@ -182,8 +182,8 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                             <li className="py-2">
                                 <div
                                     className={`text-white flex items-center rounded-lg px-4 py-2 cursor-pointer transition-all duration-300 transform ${isOrdersOpen
-                                            ? 'bg-gradient-to-r from-[#ff416c] to-[#ff4b2b] shadow-2xl'
-                                            : 'hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg'
+                                        ? 'bg-gradient-to-r from-[#ff416c] to-[#ff4b2b] shadow-2xl'
+                                        : 'hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg'
                                         }`}
                                     onClick={toggleOrders}
                                 >
@@ -238,22 +238,24 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                     {role === 'ROLE_USER' && (
                         <>
 
+                            <li className="py-2">
+                                <NavLink
+                                    to="/order-request-list"
+                                    className={({ isActive }) =>
+                                        `text-white flex items-center rounded-lg px-4 py-2 transition-all duration-300 transform ${isActive ? 'bg-gradient-to-r from-[#ff416c] to-[#ff4b2b] shadow-2xl ' : 'hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg '}`
+                                    }
+                                    onClick={closeSidebar}
+                                >
+                                    <FontAwesomeIcon icon={faTags} className="mr-3 text-lg" />
+                                    <span className="flex-1">Order List</span>
+                                </NavLink>
+                            </li>
+
 
                         </>
                     )}
 
-                    {/* <li className="py-2">
-                        <NavLink
-                            to="/certification"
-                            className={({ isActive }) =>
-                                `text-white flex items-center rounded-lg px-4 py-2 transition-all duration-300 transform ${isActive ? 'bg-gradient-to-r from-[#ff416c] to-[#ff4b2b] shadow-2xl scale-110' : 'hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg hover:scale-105'}`
-                            }
-                            onClick={closeSidebar}
-                        >
-                            <FontAwesomeIcon icon={faCertificate} className="mr-3 text-lg" />
-                            <span className="flex-1">Certification</span>
-                        </NavLink>
-                    </li> */}
+
 
                     <li className="py-2">
                         <NavLink

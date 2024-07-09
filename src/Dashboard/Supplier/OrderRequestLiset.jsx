@@ -6,7 +6,7 @@ import ConfirmationModal from './ConfirmationModal';
 import UpdateModal from './UpdateModal';
 import ViewModal from './ViewModal';
 
-export default function OrderList() {
+export default function OrderRequestList() {
 
     const perPage = 10;
     const API = `http://192.168.1.90:8082/masterservice/api/order`;
@@ -27,7 +27,7 @@ export default function OrderList() {
 
 
     const [showUpdateModal, setShowUpdateModal] = useState(false);
-    const [updateCourse, setUpdateCourse] = useState({});
+    const [updateOrder, setUpdateOrder] = useState({});
 
     const [showViewModal, setShowViewModal] = useState(false);
     const [viewOrderList, setViewOrderList] = useState({});
@@ -113,8 +113,8 @@ export default function OrderList() {
                     'Authorization': `Bearer ${storedToken}`
                 }
             });
-            setUpdateCourse(response.data.data);
-            console.log(response.data.data);
+            setUpdateOrder(response.data.data);
+            // console.log(response.data.data);
             setShowUpdateModal(true);
         } catch (error) {
             console.error('Error fetching OrderList details:', error);
@@ -205,7 +205,7 @@ export default function OrderList() {
                     </div>
                 </div>
                 <div>
-                    <h2 className="text-xl font-semibold mb-4">Order List:-</h2>
+                    <h2 className="text-xl font-semibold mb-4">Order Requested :-</h2>
                     <div className="overflow-x-auto">
                         <table className="min-w-full divide-y divide-gray-200">
                             <thead className="bg-gray-100 uppercase">
@@ -241,15 +241,15 @@ export default function OrderList() {
                                                     onClick={() => handleViewOrderList(course.id)}
                                                     className="text-green-500 hover:text-green-700 transition font-semibold duration-300 ease-in-out"
                                                 >
-                                                    {/* <FaEye />   */} View
+                                                    <FaEye />   
                                                 </button>
-                                                {/* <button
+                                                <button
                                                     onClick={() => handleEdit(course.id)}
                                                     className="text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out"
                                                 >
                                                     <FaEdit />
                                                 </button>
-                                                <button
+                                                {/* <button
                                                     onClick={() => handleDeleteConfirmation(course.id, course.status)}
                                                     className="text-red-500 hover:text-red-700 transition duration-300 ease-in-out"
                                                 >
@@ -277,7 +277,7 @@ export default function OrderList() {
             {/* Update Modal */}
             {showUpdateModal && (
                 <UpdateModal
-                    course={updateCourse}
+                    order={updateOrder}
                     onClose={() => setShowUpdateModal(false)}
                     onUpdate={() => {
                         fetchOrderListList();

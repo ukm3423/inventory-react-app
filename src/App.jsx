@@ -17,9 +17,10 @@ import StudentLogin from './Dashboard/pages/Student/StudentLogin';
 import OTPPage from './Dashboard/pages/Student/OTPPage';
 import Category from './Dashboard/pages/Category/Category';
 import Product from './Dashboard/pages/Product/Product';
-import Supplier from './Dashboard/pages/Supplier/Supplier';
+import Supplier from './Dashboard/pages/SupplierMaster/Supplier';
 import Order from './Dashboard/pages/Order/Order';
 import OrderList from './Dashboard/pages/Order/OrderList';
+import OrderRequestList from './Dashboard/Supplier/OrderRequestLiset';
 
 function AppContent() {
   const location = useLocation();
@@ -43,7 +44,7 @@ function AppContent() {
         {!isPublicPage && <Header />}
         <main className={`flex-1 overflow-y-auto ${!isPublicPage ? 'bg-gray-100' : ''}`}>
           <Routes>
-            
+
             <Route path="/login" element={<AdminLogin />} />
             <Route path="/login-panel" element={<LoginPanel />} />
             <Route path="/student-login" element={<StudentLogin />} />
@@ -66,15 +67,17 @@ function AppContent() {
                 <Route path="/products" element={<ProtectedRoute allowedRoles={['admin']}><Product /></ProtectedRoute>} />
                 <Route path="/orders" element={<ProtectedRoute allowedRoles={['admin']}><Order /></ProtectedRoute>} />
                 <Route path="/order-list" element={<ProtectedRoute allowedRoles={['admin']}><OrderList /></ProtectedRoute>} />
+                {/* <Route path="/order-reqeust-list" element={<ProtectedRoute allowedRoles={['admin']}><OrderRequestList /></ProtectedRoute>} /> */}
 
 
-                
+
               </>
             )}
 
             {role === 'ROLE_USER' && (
               <>
-                
+                <Route path="/order-request-list" element={<ProtectedRoute allowedRoles={['student']}><OrderRequestList /></ProtectedRoute>} />
+
               </>)}
           </Routes>
         </main>
