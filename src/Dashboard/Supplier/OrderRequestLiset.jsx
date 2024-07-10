@@ -32,27 +32,6 @@ export default function OrderRequestList() {
     const [showViewModal, setShowViewModal] = useState(false);
     const [viewOrderList, setViewOrderList] = useState({});
 
-    // * ====================================== Adding A New Course ======================================
-
-    const handleAddCourse = async () => {
-        try {
-            const response = await axios.post(`${API}/add`, { OrderListName, description }, {
-                headers: {
-                    'Authorization': `Bearer ${storedToken}`
-                }
-            });
-            setOrderListName('');
-            setDescription('');
-            fetchOrderListList();
-            toast.success(response.data.message);
-        } catch (error) {
-            if (error.response && error.response.data && error.response.data.message) {
-                toast.error(error.response.data.message);
-            } else {
-                console.error('Error adding course:', error);
-            }
-        }
-    };
 
     // * ====================================== Order List Section Start ======================================
 
@@ -281,7 +260,7 @@ export default function OrderRequestList() {
                     onClose={() => setShowUpdateModal(false)}
                     onUpdate={() => {
                         fetchOrderListList();
-                        toast.success("OrderList Updated Successfully.");
+                        toast.success("Order Deliver Successfully.");
                     }}
                 />
             )}

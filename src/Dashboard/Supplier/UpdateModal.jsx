@@ -26,10 +26,21 @@ const UpdateModal = ({ order, onClose, onUpdate }) => {
         setModalOpen(true);
     }, []);
 
+    // Calculate Grand Total
+    const grandTotal = products.reduce((total, product) => {
+        return total + (product.quantity * product.rate);
+    }, 0);
+
+    // Format Grand Total with comma separators and two decimal places
+    const formattedGrandTotal = grandTotal.toLocaleString('en-IN', {
+        style: 'currency',
+        currency: 'INR'
+    });
+
     const handleUpdate = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.put(`http://192.168.1.90:8082/masterservice/api/orders/update/${order.id}`, {
+            const response = await axios.post(`http://192.168.1.90:8082/masterservice/api/delivery/make-delivery`, {
                 orderCode: orderCode,
                 supplierName: supplierName,
                 orderDate: orderDate,
@@ -106,25 +117,36 @@ const UpdateModal = ({ order, onClose, onUpdate }) => {
                                 <table className="min-w-full divide-y divide-gray-200">
                                     <thead className="bg-gray-50">
                                         <tr>
+                                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">SL. No</th>
                                             <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product Name</th>
                                             <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category Name</th>
                                             <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
                                             <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rate</th>
+                                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+
                                         </tr>
                                     </thead>
                                     <tbody className="bg-white divide-y divide-gray-200">
                                         {products.map((product, index) => (
                                             <tr key={index}>
+                                                <td className="px-6 py-4 whitespace-nowrap">{index + 1}</td>
                                                 <td className="px-6 py-4 whitespace-nowrap">{product.productName}</td>
                                                 <td className="px-6 py-4 whitespace-nowrap">{product.categoryName}</td>
                                                 <td className="px-6 py-4 whitespace-nowrap">{product.quantity}</td>
                                                 <td className="px-6 py-4 whitespace-nowrap">{product.rate}</td>
+                                                <td className="px-6 py-4 whitespace-nowrap">{product.rate * product.quantity}</td>
                                             </tr>
                                         ))}
                                     </tbody>
                                 </table>
                             </div>
                         </div>
+                        {/* Grand Total */}
+                        <div className="flex justify-start items-center mb-2">
+                            <span className="text-lg font-medium">Grand Total:</span>
+                            <span className="ml-2 text-lg font-medium text-blue-600">{formattedGrandTotal}</span>
+                        </div>
+                        {/* Error Message */}
                         {errorMessage && (
                             <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4">
                                 <p className="font-bold">Error:</p>
