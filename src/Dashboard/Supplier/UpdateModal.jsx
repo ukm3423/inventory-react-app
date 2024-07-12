@@ -73,7 +73,7 @@ const UpdateModal = ({ order, onClose, onUpdate }) => {
         <div className={`fixed z-50 inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 p-4 sm:p-6 lg:p-8  ${onClose ? 'opacity-100 bg-gray-900 bg-opacity-50' : 'opacity-0 pointer-events-none'}`}>
             <div className={`bg-white w-full max-w-6xl rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300  ${modalOpen ? 'scale-100' : 'scale-90'}`}>
                 <div className="bg-gradient-to-r from-pink-400 to-red-500 px-4 py-3 sm:px-6">
-                    <h3 className="text-lg leading-6 font-medium text-white">Deliver Order</h3>
+                    <h3 className="text-lg leading-8 font-medium text-white">Deliver Order</h3>
                 </div>
                 <div className="bg-white px-4 pt-5 pb-4 sm:p-6">
                     <form onSubmit={handleUpdate}>
@@ -97,6 +97,7 @@ const UpdateModal = ({ order, onClose, onUpdate }) => {
                                     value={supplierName}
                                     onChange={(e) => setSupplierName(e.target.value)}
                                     className="mt-1 px-4 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:border-blue-500 transition duration-150 ease-in-out"
+                                    readOnly
                                 />
                             </div>
                             <div>
@@ -129,12 +130,12 @@ const UpdateModal = ({ order, onClose, onUpdate }) => {
                                     <tbody className="bg-white divide-y divide-gray-200">
                                         {products.map((product, index) => (
                                             <tr key={index}>
-                                                <td className="px-6 py-4 whitespace-nowrap">{index + 1}</td>
-                                                <td className="px-6 py-4 whitespace-nowrap">{product.productName}</td>
-                                                <td className="px-6 py-4 whitespace-nowrap">{product.categoryName}</td>
-                                                <td className="px-6 py-4 whitespace-nowrap">{product.quantity}</td>
-                                                <td className="px-6 py-4 whitespace-nowrap">{product.rate}</td>
-                                                <td className="px-6 py-4 whitespace-nowrap">{product.rate * product.quantity}</td>
+                                                <td className="px-6 py-3 whitespace-nowrap">{index + 1}</td>
+                                                <td className="px-6 py-3 whitespace-nowrap">{product.productName}</td>
+                                                <td className="px-6 py-3 whitespace-nowrap">{product.categoryName}</td>
+                                                <td className="px-6 py-3 whitespace-nowrap">{product.quantity}</td>
+                                                <td className="px-6 py-3 whitespace-nowrap">{product.rate}</td>
+                                                <td className="px-6 py-3 whitespace-nowrap">{product.rate * product.quantity}</td>
                                             </tr>
                                         ))}
                                     </tbody>

@@ -21,6 +21,7 @@ import Supplier from './Dashboard/pages/SupplierMaster/Supplier';
 import Order from './Dashboard/pages/Order/Order';
 import OrderList from './Dashboard/pages/Order/OrderList';
 import OrderRequestList from './Dashboard/Supplier/OrderRequestLiset';
+import Sales from './Dashboard/pages/Sale/Sales';
 
 function AppContent() {
   const location = useLocation();
@@ -67,7 +68,7 @@ function AppContent() {
                 <Route path="/products" element={<ProtectedRoute allowedRoles={['admin']}><Product /></ProtectedRoute>} />
                 <Route path="/orders" element={<ProtectedRoute allowedRoles={['admin']}><Order /></ProtectedRoute>} />
                 <Route path="/order-list" element={<ProtectedRoute allowedRoles={['admin']}><OrderList /></ProtectedRoute>} />
-                {/* <Route path="/order-reqeust-list" element={<ProtectedRoute allowedRoles={['admin']}><OrderRequestList /></ProtectedRoute>} /> */}
+                <Route path="/sales" element={<ProtectedRoute allowedRoles={['admin']}><Sales /></ProtectedRoute>} />
 
 
 

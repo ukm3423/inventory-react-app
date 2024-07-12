@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChalkboardTeacher, faTags, faBox, faUsers, faCog, faTachometerAlt, faList, faBold, faTableList, faCertificate } from '@fortawesome/free-solid-svg-icons';
+import { faChalkboardTeacher, faTags, faBox, faUsers, faCog, faTachometerAlt, faList, faBold, faTableList, faCertificate, faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import logo from "../assets/agg.png";
 import bg from "../assets/bg.png";
 
@@ -13,21 +13,35 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
     const location = useLocation();
     const [isMasterOpen, setIsMasterOpen] = useState(false);
     const [isOrdersOpen, setIsOrdersOpen] = useState(false);
+    const [isSalesOpen, setIsSalesOpen] = useState(false);
 
     const toggleMaster = () => {
         setIsMasterOpen(!isMasterOpen);
 
-        // Close the Orders dropdown when opening Master
-        if (!isMasterOpen && isOrdersOpen) {
+        // Close the Orders and Sales dropdowns when opening Master
+        if (!isMasterOpen && (isOrdersOpen || isSalesOpen)) {
             setIsOrdersOpen(false);
+            setIsSalesOpen(false);
         }
     };
 
     const toggleOrders = () => {
         setIsOrdersOpen(!isOrdersOpen);
-        // Close the Master dropdown when opening Orders
-        if (!isOrdersOpen && isMasterOpen) {
+
+        // Close the Master and Sales dropdowns when opening Orders
+        if (!isOrdersOpen && (isMasterOpen || isSalesOpen)) {
             setIsMasterOpen(false);
+            setIsSalesOpen(false);
+        }
+    };
+
+    const toggleSales = () => {
+        setIsSalesOpen(!isSalesOpen);
+
+        // Close the Master and Orders dropdowns when opening Sales
+        if (!isSalesOpen && (isMasterOpen || isOrdersOpen)) {
+            setIsMasterOpen(false);
+            setIsOrdersOpen(false);
         }
     };
 
@@ -226,6 +240,61 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                                             >
                                                 <FontAwesomeIcon icon={faBox} className="mr-3" />
                                                 Order List
+                                            </NavLink>
+                                        </li>
+                                    </ul>
+                                )}
+                            </li>
+
+
+                            {/* Sales dropdown */}
+                            <li className="py-2">
+                                <div
+                                    className={`text-white flex items-center rounded-lg px-4 py-2 cursor-pointer transition-all duration-300 transform ${isSalesOpen
+                                        ? 'bg-gradient-to-r from-[#ff416c] to-[#ff4b2b] shadow-2xl'
+                                        : 'hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg'
+                                        }`}
+                                    onClick={toggleSales}
+                                >
+                                    <FontAwesomeIcon icon={faCartShopping} className="mr-3 text-lg" />
+                                    <span className="flex-1">Manage Sales</span>
+                                    <svg
+                                        className={`w-4 h-4 ml-auto transition-transform ${isOrdersOpen ? 'transform rotate-90' : ''}`}
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            fillRule="evenodd"
+                                            d="M6.293 5.293a1 1 0 011.414 0L10 8.586l2.293-2.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
+                                            clipRule="evenodd"
+                                        />
+                                    </svg>
+                                </div>
+
+                                {/* Orders dropdown items */}
+                                {isSalesOpen && (
+                                    <ul className="pl-4 mt-2">
+                                        <li className="py-2">
+                                            <NavLink
+                                                to="/sales"
+                                                className={`flex items-center rounded-lg px-4 py-1.5 hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg ${location.pathname === '/sales' ? 'bg-white text-gray-900 rounded-md' : 'text-white'
+                                                    }`}
+                                                onClick={closeSidebar}
+                                            >
+                                                <FontAwesomeIcon icon={faTags} className="mr-3" />
+                                                Sale Request
+                                            </NavLink>
+                                        </li>
+                                        <li className="py-2">
+                                            <NavLink
+                                                to="/sales-list"
+                                                className={`flex items-center rounded-lg px-4 py-1.5 hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg ${location.pathname === '/sales-list' ? 'bg-white text-gray-900 rounded-md' : 'text-white'
+                                                    }`}
+                                                onClick={closeSidebar}
+                                            >
+                                                <FontAwesomeIcon icon={faBox} className="mr-3" />
+                                                Sale List
                                             </NavLink>
                                         </li>
                                     </ul>

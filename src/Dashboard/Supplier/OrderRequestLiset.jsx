@@ -191,8 +191,11 @@ export default function OrderRequestList() {
                                 <tr>
                                     <th scope="col" className="px-6 py-2 text-left text-sm font-medium text-gray-500 tracking-wider">Sl. No.</th>
                                     <th className="px-6 py-2 text-left  text-sm font-medium text-gray-500  tracking-wider">Order Number</th>
+                                    <th className="px-6 py-2 text-left text-sm font-medium text-gray-500 tracking-wider">Invoice Number</th>
+
                                     <th className="px-6 py-2 text-left  text-sm font-medium text-gray-500  tracking-wider">Supplier</th>
                                     <th className="px-6 py-2 text-left  text-sm font-medium text-gray-500  tracking-wider">Order Date</th>
+                                    <th className="px-6 py-2 text-left text-sm font-medium text-gray-500 tracking-wider">Delivery Date</th>
 
                                     <th className="px-6 py-2 text-left  text-sm font-medium text-gray-500  tracking-wider">Status</th>
                                     <th className="px-6 py-2 text-left  text-sm font-medium text-gray-500  tracking-wider">Actions</th>
@@ -204,12 +207,28 @@ export default function OrderRequestList() {
                                     <tr key={course.id} className="transition duration-300  ease-in-out hover:bg-gray-50">
                                         <td className="px-6 py-2 text-gray-800 whitespace-nowrap">{index + 1 + currentPage * perPage}</td>
                                         <td className="px-6 py-2 text-gray-800 whitespace-nowrap">{course.orderNumber}</td>
+                                        <td className="px-6 py-2 whitespace-nowrap">
+                                            {course.invoiceNumber ? (
+                                                <span className="text-gray-800">{course.invoiceNumber}</span>
+                                            ) : (
+                                                <span className="text-red-500 font-semibold">Pending</span>
+                                            )}
+                                        </td>
+
                                         <td className="px-6 py-2 text-gray-800 whitespace-nowrap">{course.supplier.supplierName}</td>
                                         <td className="px-6 py-2 text-gray-800 whitespace-nowrap">{course.orderDate}</td>
 
+                                        <td className="px-6 py-2 whitespace-nowrap">
+                                            {course.deliveryDate ? (
+                                                <span className="text-gray-800">{course.deliveryDate}</span>
+                                            ) : (
+                                                <span className="text-red-500 font-semibold">Pending</span>
+                                            )}
+                                        </td>
+
                                         <td className="px-6 py-2 text-gray-800 whitespace-nowrap">
                                             {course.status ? (
-                                                <span className="text-green-500 font-medium">Delivery</span>
+                                                <span className="text-green-500 font-medium">Delivered</span>
                                             ) : (
                                                 <span className="text-red-500 font-medium">Pending</span>
                                             )}
@@ -217,23 +236,11 @@ export default function OrderRequestList() {
                                         <td className="px-6 py-2 text-gray-800 whitespace-nowrap">
                                             <div className="flex space-x-4">
                                                 <button
-                                                    onClick={() => handleViewOrderList(course.id)}
-                                                    className="text-green-500 hover:text-green-700 transition font-semibold duration-300 ease-in-out"
-                                                >
-                                                    <FaEye />   
-                                                </button>
-                                                <button
                                                     onClick={() => handleEdit(course.id)}
-                                                    className="text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out"
+                                                    className="text-blue-500 hover:text-blue-700 transition font-semibold duration-300 ease-in-out"
                                                 >
-                                                    <FaEdit />
+                                                    View
                                                 </button>
-                                                {/* <button
-                                                    onClick={() => handleDeleteConfirmation(course.id, course.status)}
-                                                    className="text-red-500 hover:text-red-700 transition duration-300 ease-in-out"
-                                                >
-                                                    <FaTrash />
-                                                </button> */}
                                             </div>
                                         </td>
                                     </tr>
