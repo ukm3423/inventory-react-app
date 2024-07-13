@@ -6,23 +6,23 @@ import ConfirmationModal from './ConfirmationModal';
 import UpdateModal from './UpdateModal';
 import ViewModal from './ViewModal';
 
-export default function OrderList() {
+export default function SaleList() {
 
     const perPage = 10;
-    const API = `http://192.168.1.90:8082/masterservice/api/order`;
+    const API = `http://192.168.1.90:8082/masterservice/api/sale`;
     const storedToken = localStorage.getItem('token');  // This is temporary solution 
 
 
-    const [OrderListName, setOrderListName] = useState('');
+    const [SaleListName, setSaleListName] = useState('');
     const [description, setDescription] = useState('');
-    const [categories, setOrderList] = useState([]);
+    const [categories, setSaleList] = useState([]);
 
-    const [OrderListList, setOrderListList] = useState([]);
+    const [SaleListList, setSaleListList] = useState([]);
     const [pageCount, setPageCount] = useState(0);
     const [currentPage, setCurrentPage] = useState(0); // Updated state for current page
 
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
-    const [OrderListIdToDelete, setOrderListIdToDelete] = useState(null);
+    const [SaleListIdToDelete, setSaleListIdToDelete] = useState(null);
     const [courseStatusToDelete, setCourseStatusToDelete] = useState(null);
 
 
@@ -30,53 +30,32 @@ export default function OrderList() {
     const [updateCourse, setUpdateCourse] = useState({});
 
     const [showViewModal, setShowViewModal] = useState(false);
-    const [viewOrderList, setViewOrderList] = useState({});
+    const [viewSaleList, setViewSaleList] = useState({});
 
-    // * ====================================== Adding A New Course ======================================
-
-    const handleAddCourse = async () => {
-        try {
-            const response = await axios.post(`${API}/add`, { OrderListName, description }, {
-                headers: {
-                    'Authorization': `Bearer ${storedToken}`
-                }
-            });
-            setOrderListName('');
-            setDescription('');
-            fetchOrderListList();
-            toast.success(response.data.message);
-        } catch (error) {
-            if (error.response && error.response.data && error.response.data.message) {
-                toast.error(error.response.data.message);
-            } else {
-                console.error('Error adding course:', error);
-            }
-        }
-    };
 
     // * ====================================== Order List Section Start ======================================
 
-    const fetchOrderListList = async () => {
+    const fetchSaleList = async () => {
         try {
-            const response = await axios.get(`${API}/get-order-list`, {
+            const response = await axios.get(`${API}/get-sale-list`, {
 
                 headers: {
                     'Authorization': `Bearer ${storedToken}`
                 }
             });
 
-            setOrderListList(response.data);
-            setFilteredOrderList(response.data);
+            setSaleListList(response.data);
+            setFilteredSaleList(response.data);
             // setPageCount(response.data.totalPages); // Update pageCount with totalPages from response
         } catch (error) {
-            console.error('Error fetching OrderList list:', error);
+            console.error('Error fetching SaleList list:', error);
         }
     };
 
 
     useEffect(() => {
-        fetchOrderListList();
-    }, [currentPage]); // Trigger fetchOrderListList when currentPage changes
+        fetchSaleList();
+    }, [currentPage]); // Trigger fetchSaleList when currentPage changes
 
     const handlePageClick = ({ selected }) => {
         setCurrentPage(selected); // Update currentPage state when page changes
@@ -85,30 +64,30 @@ export default function OrderList() {
     // * ====================================== Delete Section Start ======================================
     const handleDelete = async () => {
         try {
-            const response = await axios.delete(`${API}/delete/${OrderListIdToDelete}`, {
+            const response = await axios.delete(`${API}/delete/${SaleListIdToDelete}`, {
                 headers: {
                     'Authorization': `Bearer ${storedToken}`
                 }
             });
-            fetchOrderListList();
+            fetchSaleList();
             setShowConfirmationModal(false);
-            toast.success((courseStatusToDelete) ? "OrderList Deactivated." : "OrderList Activated.");
+            toast.success((courseStatusToDelete) ? "SaleList Deactivated." : "SaleList Activated.");
         } catch (error) {
-            console.error('Error deleting OrderList:', error);
+            console.error('Error deleting SaleList:', error);
         }
     };
 
-    const handleDeleteConfirmation = (OrderListId, status) => {
-        setOrderListIdToDelete(OrderListId);
+    const handleDeleteConfirmation = (SaleListId, status) => {
+        setSaleListIdToDelete(SaleListId);
         setCourseStatusToDelete(status);
         setShowConfirmationModal(true);
     };
 
     // * ====================================== Update Section Start ======================================
 
-    const handleEdit = async (OrderListId) => {
+    const handleEdit = async (SaleListId) => {
         try {
-            const response = await axios.get(`${API}/get/${OrderListId}`, {
+            const response = await axios.get(`${API}/get/${SaleListId}`, {
                 headers: {
                     'Authorization': `Bearer ${storedToken}`
                 }
@@ -117,48 +96,49 @@ export default function OrderList() {
             console.log(response.data.data);
             setShowUpdateModal(true);
         } catch (error) {
-            console.error('Error fetching OrderList details:', error);
+            console.error('Error fetching SaleList details:', error);
         }
     };
 
 
     // * ====================================== View Section Start ======================================
 
-    const handleViewOrderList = async (OrderListId) => {
+    const handleViewSaleList = async (SaleListId) => {
         try {
-            const response = await axios.get(`${API}/get/${OrderListId}`, {
+            const response = await axios.get(`${API}/get/${SaleListId}`, {
                 headers: {
                     'Authorization': `Bearer ${storedToken}`
                 }
             });
-            setViewOrderList(response.data.data);
+            setViewSaleList(response.data.data);
             console.log(response.data.data);
             setShowViewModal(true);
         } catch (error) {
-            console.error('Error fetching OrderList details:', error);
+            console.error('Error fetching SaleList details:', error);
         }
     };
 
 
     // * ====================================== Filter Section Start ======================================
-    const [orderNumberFilter, setOrderNumberFilter] = useState('');
+    const [billNumberFilter, setBillNumberFilter] = useState('');
     const [fromDateFilter, setFromDateFilter] = useState('');
     const [toDateFilter, setToDateFilter] = useState('');
-    const [filteredOrderList, setFilteredOrderList] = useState(OrderListList);
+    const [filteredSaleList, setFilteredSaleList] = useState(SaleListList);
 
     useEffect(() => {
         applyFilters();
-    }, [orderNumberFilter, fromDateFilter, toDateFilter]);
+    }, [billNumberFilter, fromDateFilter, toDateFilter]);
 
     const applyFilters = () => {
-        let filteredList = OrderListList.filter(order => {
+        let filteredList = SaleListList.filter(sale => {
             // Filter by order number
-            if (orderNumberFilter && !order.orderNumber.toLowerCase().includes(orderNumberFilter.toLowerCase())) {
+            console.log("SALE : ",sale)
+            if (billNumberFilter && !sale.billNumber.toLowerCase().includes(billNumberFilter.toLowerCase())) {
                 return false;
             }
             // Filter by date range
             if (fromDateFilter && toDateFilter) {
-                const orderDate = new Date(order.orderDate);
+                const orderDate = new Date(sale.saleDate);
                 const fromDate = new Date(fromDateFilter);
                 const toDate = new Date(toDateFilter);
                 if (orderDate < fromDate || orderDate > toDate) {
@@ -167,7 +147,7 @@ export default function OrderList() {
             }
             return true;
         });
-        setFilteredOrderList(filteredList);
+        setFilteredSaleList(filteredList);
     };
 
 
@@ -176,16 +156,16 @@ export default function OrderList() {
         <div className="p-6 m-6 bg-white rounded-lg shadow-md">
             <div className="grid grid-cols-1 lg:grid-cols-1 gap-6">
 
-                <h2 className="text-2xl font-bold mb-4 text-gray-800">All OrderList</h2>
+                <h2 className="text-2xl font-bold mb-4 text-gray-800">All Sale List</h2>
 
                 <div className="flex flex-col lg:flex-row justify-between space-y-4 lg:space-y-0">
                     <div className="w-full lg:w-auto">
                         <input
                             type="text"
-                            placeholder="Search by Order Number"
+                            placeholder="Search by Bill Number"
                             className="border px-3 py-2 rounded-lg w-full"
-                            value={orderNumberFilter}
-                            onChange={(e) => setOrderNumberFilter(e.target.value)}
+                            value={billNumberFilter}
+                            onChange={(e) => setBillNumberFilter(e.target.value)}
                         />
                     </div>
                     <div className="flex flex-col lg:flex-row items-center space-y-2 lg:space-y-0 lg:space-x-2">
@@ -211,9 +191,9 @@ export default function OrderList() {
                             <thead className="bg-gray-100 uppercase">
                                 <tr>
                                     <th scope="col" className="px-6 py-2 text-left text-sm font-medium text-gray-500 tracking-wider">Sl. No.</th>
-                                    <th className="px-6 py-2 text-left  text-sm font-medium text-gray-500  tracking-wider">Order Number</th>
-                                    <th className="px-6 py-2 text-left  text-sm font-medium text-gray-500  tracking-wider">Supplier</th>
-                                    <th className="px-6 py-2 text-left  text-sm font-medium text-gray-500  tracking-wider">Order Date</th>
+                                    <th className="px-6 py-2 text-left  text-sm font-medium text-gray-500  tracking-wider">Bill Number</th>
+                                    <th className="px-6 py-2 text-left  text-sm font-medium text-gray-500  tracking-wider">Customer </th>
+                                    <th className="px-6 py-2 text-left  text-sm font-medium text-gray-500  tracking-wider">Sale Date</th>
 
                                     <th className="px-6 py-2 text-left  text-sm font-medium text-gray-500  tracking-wider">Status</th>
                                     <th className="px-6 py-2 text-left  text-sm font-medium text-gray-500  tracking-wider">Actions</th>
@@ -221,12 +201,12 @@ export default function OrderList() {
                             </thead>
                             <tbody className="bg-white divide-y divide-gray-200">
 
-                                {filteredOrderList.map((course, index) => (
+                                {filteredSaleList.map((course, index) => (
                                     <tr key={course.id} className="transition duration-300  ease-in-out hover:bg-gray-50">
                                         <td className="px-6 py-2 text-gray-800 whitespace-nowrap">{index + 1 + currentPage * perPage}</td>
-                                        <td className="px-6 py-2 text-gray-800 whitespace-nowrap">{course.orderNumber}</td>
-                                        <td className="px-6 py-2 text-gray-800 whitespace-nowrap">{course.supplier.supplierName}</td>
-                                        <td className="px-6 py-2 text-gray-800 whitespace-nowrap">{course.orderDate}</td>
+                                        <td className="px-6 py-2 text-gray-800 whitespace-nowrap">{course.billNumber}</td>
+                                        <td className="px-6 py-2 text-gray-800 whitespace-nowrap">{course.customerName}</td>
+                                        <td className="px-6 py-2 text-gray-800 whitespace-nowrap">{course.saleDate}</td>
 
                                         <td className="px-6 py-2 text-gray-800 whitespace-nowrap">
                                             {course.status ? (
@@ -238,7 +218,7 @@ export default function OrderList() {
                                         <td className="px-6 py-2 text-gray-800 whitespace-nowrap">
                                             <div className="flex space-x-4">
                                                 <button
-                                                    onClick={() => handleViewOrderList(course.id)}
+                                                    onClick={() => handleViewSaleList(course.id)}
                                                     className="text-blue-500 hover:text-blue-700 transition font-semibold duration-300 ease-in-out"
                                                 >
                                                     {/* <FaEye />   */} View
@@ -280,8 +260,8 @@ export default function OrderList() {
                     course={updateCourse}
                     onClose={() => setShowUpdateModal(false)}
                     onUpdate={() => {
-                        fetchOrderListList();
-                        toast.success("OrderList Updated Successfully.");
+                        fetchSaleList();
+                        toast.success("SaleList Updated Successfully.");
                     }}
                 />
             )}
@@ -290,7 +270,7 @@ export default function OrderList() {
             {/* Update Modal */}
             {showViewModal && (
                 <ViewModal
-                    order={viewOrderList}
+                    sale={viewSaleList}
                     onClose={() => setShowViewModal(false)}
                 />
             )}

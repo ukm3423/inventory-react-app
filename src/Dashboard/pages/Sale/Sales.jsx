@@ -14,9 +14,10 @@ const Sales = () => {
   const [price, setPrice] = useState('');
   const [OrderId, setOrderId] = useState('');
   const [categoryId, setCategoryId] = useState('');
-  const [supplierId, setSupplierId] = useState('');
+  const [customerName, setCustomerName] = useState('');
+  const [contactNo, setContactNo] = useState('');
+
   const [productId, setProductId] = useState('');
-  const [categoryName, setCategoryName] = useState('');
   const [productName, setProductName] = useState('');
 
 
@@ -25,7 +26,7 @@ const Sales = () => {
   const [rate, setRate] = useState(0);
 
 
-  const [productDetailsList, setProductDetailsList] = useState([]);
+  const [saleDetailsList, setSaleDetailsList] = useState([]);
 
   const [categoryList, setCategoryList] = useState([]); // Initialize as null
   const [supplierList, setSupplierList] = useState([]);
@@ -93,8 +94,8 @@ const Sales = () => {
       return;
     }
 
-    // Check if the product already exists in productDetailsList
-    const existingProduct = productDetailsList.find(product => product.categoryId == categoryId && product.productId == productId);
+    // Check if the product already exists in saleDetailsList
+    const existingProduct = saleDetailsList.find(product => product.categoryId == categoryId && product.productId == productId);
 
     if (existingProduct) {
       toast.error('Product already exists in List !!');
@@ -114,7 +115,7 @@ const Sales = () => {
 
     console.log('Adding Product:', product);
 
-    setProductDetailsList([...productDetailsList, product]);
+    setSaleDetailsList([...saleDetailsList, product]);
 
     // Clear fields after adding product
     setCategoryId('');
@@ -190,23 +191,27 @@ const Sales = () => {
 
     try {
 
+      // Check if saleDetailsList has at least one product
+      if (saleDetailsList.length === 0) {
+        toast.error('Please add at least one product to the sale.');
+        return;
+      }
 
-      const response = await axios.post(`${API}/place-order`, { productDetailsList, supplierId, date }, {
+      const response = await axios.post(`${API}/add`, { saleDetailsList, customerName, contactNo, date }, {
         headers: {
           'Authorization': `Bearer ${storedToken}`
         }
       });
-      setOrderName('');
-      setOrderCode('');
-      setPrice('');
-      setCategoryId('');
+      setContactNo('');
+      setCustomerName('');
+      // setPrice('');
       // setImage(null);
-      const orderNO = response.data.data.orderNumber;
-      toast.success(`Order Placed Successful! \nOrder No: ${orderNO}`);
-      setProductDetailsList([]);
+      const billNo = response.data.data.billNumber;
+      toast.success(`Sale Successful!\n\nBill No: ${billNo}`);
+      setSaleDetailsList([]);
     } catch (error) {
       if (error.response && error.response.data && error.response.data.message) {
-        toast.error(error.response.data.message);
+        toast.error(error.response.data.errors.message);
       } else {
         console.error('Error adding Order:', error);
       }
@@ -225,12 +230,12 @@ const Sales = () => {
   const handleDelete = async (e) => {
     try {
       e.preventDefault(); // Prevent default form submission behavior (if applicable)
-      const existingProductIndex = productDetailsList.findIndex(product => product.categoryId == OrderIdToDelete && product.productId == OrderStatusToDelete);
+      const existingProductIndex = saleDetailsList.findIndex(product => product.categoryId == OrderIdToDelete && product.productId == OrderStatusToDelete);
       if (existingProductIndex !== -1) {
-        // Remove item from productDetailsList
-        productDetailsList.splice(existingProductIndex, 1);
-        // Update state to reflect the deletion (assuming productDetailsList is a state variable)
-        setProductDetailsList([...productDetailsList]);
+        // Remove item from saleDetailsList
+        saleDetailsList.splice(existingProductIndex, 1);
+        // Update state to reflect the deletion (assuming saleDetailsList is a state variable)
+        setSaleDetailsList([...saleDetailsList]);
 
         setShowConfirmationModal(false);
         toast.success(OrderStatusToDelete ? "Product Deleted." : "Something Went Wrong...");
@@ -239,7 +244,7 @@ const Sales = () => {
         setCategoryIdToDelete(null);
         setProductIdToDelete(null);
       } else {
-        console.log("Item not found in productDetailsList.");
+        console.log("Item not found in saleDetailsList.");
       }
     } catch (error) {
       console.error('Error deleting category:', error);
@@ -288,12 +293,25 @@ const Sales = () => {
   // ====================================================
   const calculateGrandTotal = () => {
     let total = 0;
-    productDetailsList.forEach(product => {
+    saleDetailsList.forEach(product => {
       total += product.quantity * product.rate;
     });
     return total;
 
   };
+
+  // ===================== Check for Valid Contact No =================
+  const handleContactNoChange = (e) => {
+    const inputContactNo = e.target.value;
+
+    // Check if the entered value is a number and is not more than 10 digits
+    if (/^\d{0,10}$/.test(inputContactNo)) {
+      setContactNo(inputContactNo);
+    }
+    // Optionally, you can show an error message or handle invalid input in another way
+  };
+
+  // ===================== Fetching Data on Mount ====================
   return (
     <div className="p-6 m-6 bg-white rounded-lg shadow-md">
       <div className="grid grid-cols-1 lg:grid-cols-1 gap-6">
@@ -337,20 +355,26 @@ const Sales = () => {
                 <input
                   type="text"
                   id="orderId"
-                  // value={orderId}
+                  value={customerName}
+                  onChange={(e) => setCustomerName(e.target.value)}
                   className="mt-1 px-4 py-2 border border-gray-300 rounded-md w-full sm:text-sm"
                   placeholder="Enter Customer Name "
+                  required
                 />
               </div>
               <div>
-                <label htmlFor="supplier" className="block text-sm font-medium text-gray-700">Contact Number</label>
+                <label htmlFor="supplier" className="block text-sm font-medium text-gray-700">
+                  Contact Number
+                </label>
                 <input
-                  type="number"
+                  type="tel"  // Use type="tel" for better support of phone numbers
                   id="orderId"
-                  maxLength={10}
-                  // value={orderId}
+                  value={contactNo}
+                  onChange={handleContactNoChange}
                   className="mt-1 px-4 py-2 border border-gray-300 rounded-md w-full sm:text-sm"
                   placeholder="Enter Contact Number"
+                  maxLength={10}  // Optional: enforce maximum length directly in the input field
+                  required
                 />
               </div>
 
@@ -444,7 +468,7 @@ const Sales = () => {
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
-                    {productDetailsList.map((product, index) => (
+                    {saleDetailsList.map((product, index) => (
                       <tr key={index} className="transition duration-300  ease-in-out hover:bg-gray-50">
                         <td className="px-6 py-2 text-gray-800 whitespace-nowrap">{product.categoryName}</td>
                         <td className="px-6 py-2 text-gray-800 whitespace-nowrap">{product.productName}</td>

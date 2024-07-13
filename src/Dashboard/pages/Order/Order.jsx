@@ -88,7 +88,7 @@ const Order = () => {
       console.error('Selected category or product not found');
       return;
     }
-    if(quantity <= 0) {
+    if (quantity <= 0) {
       toast.error('Please enter quantity !!!');
       return;
     }
@@ -190,6 +190,11 @@ const Order = () => {
 
     try {
 
+      // Check if saleDetailsList has at least one product
+      if (productDetailsList.length === 0) {
+        toast.error('Please add at least one product to order.');
+        return;
+      }
 
       const response = await axios.post(`${API}/place-order`, { productDetailsList, supplierId, date }, {
         headers: {
@@ -214,7 +219,7 @@ const Order = () => {
   };
 
   const handleDeleteConfirmation = (OrderId, status) => {
-    
+
     setCategoryIdToDelete(OrderId);
     setProductIdToDelete(status);
     setShowConfirmationModal(true);
@@ -231,10 +236,10 @@ const Order = () => {
         productDetailsList.splice(existingProductIndex, 1);
         // Update state to reflect the deletion (assuming productDetailsList is a state variable)
         setProductDetailsList([...productDetailsList]);
-  
+
         setShowConfirmationModal(false);
         toast.success(OrderStatusToDelete ? "Product Deleted." : "Something Went Wrong...");
-  
+
         // Reset orderIdToDelete after successful deletion
         setCategoryIdToDelete(null);
         setProductIdToDelete(null);
@@ -298,7 +303,7 @@ const Order = () => {
     <div className="p-6 m-6 bg-white rounded-lg shadow-md">
       <div className="grid grid-cols-1 lg:grid-cols-1 gap-6">
         <div className="flex justify-between items-center mb-4">
-          <h1 className="text-3xl font-bold text-center text-gray-700">Purchase Order :---</h1>
+          <h1 className="text-3xl font-bold text-center text-gray-700">Purchase Order :-</h1>
         </div>
         <div className="mb-4">
           <form onSubmit={handleSubmit} className="mb-8">
@@ -452,9 +457,9 @@ const Order = () => {
                             <button
                               type='button'
                               onClick={() => handleDeleteConfirmation(product.categoryId, product.productId)}
-                              className="text-red-500 hover:text-red-700 transition duration-300 ease-in-out"
+                              className="text-red-500 hover:text-red-700 font-semibold transition duration-300 ease-in-out"
                             >
-                              <FaTrash />
+                              {/* <FaTrash /> */} Delete
                             </button>
                           </div>
                         </td>

@@ -66,6 +66,7 @@ export default function Category() {
       });
 
       setcategoryList(response.data.data);
+      console.log(response.data)
       setPageCount(response.data.totalPages); // Update pageCount with totalPages from response
     } catch (error) {
       console.error('Error fetching category list:', error);

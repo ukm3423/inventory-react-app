@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
-const ViewModal = ({ order, onClose }) => {
-    const [orderDetails, setOrderDetails] = useState(null);
+const ViewModal = ({ sale, onClose }) => {
+    const [saleDetails, setsaleDetails] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
 
     const [modalOpen, setModalOpen] = useState(false);
@@ -24,16 +24,16 @@ const ViewModal = ({ order, onClose }) => {
     }, []);
 
     useEffect(() => {
-        setOrderDetails(order.orderDetailsList);
-        console.log("Order : ", order)
+        setsaleDetails(sale.saleDetailsList);
+        console.log("sale : ", sale)
         setIsLoading(false);
-    }, [order]);
+    }, [sale]);
 
 
     // Function to calculate Grand Total and format as Indian currency
     function calculateGrandTotal() {
         let grandTotal = 0;
-        orderDetails.forEach(ord => {
+        saleDetails.forEach(ord => {
             grandTotal += ord.quantity * ord.rate;
         });
 
@@ -50,7 +50,7 @@ const ViewModal = ({ order, onClose }) => {
         <div className={`fixed z-50 inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 p-4 sm:p-6 lg:p-8  ${onClose ? 'opacity-100 bg-gray-900 bg-opacity-50' : 'opacity-0 pointer-events-none'}`}>
             <div className={`bg-white w-full max-w-6xl rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300  ${modalOpen ? 'scale-100' : 'scale-90'}`}>
                 <div className="bg-gradient-to-r from-pink-400 to-red-500 px-4 py-4 sm:px-6 sm:py-4">
-                    <h3 className="text-lg leading-6 font-medium text-white">View order Details</h3>
+                    <h3 className="text-lg leading-6 font-medium text-white">View Sale Details</h3>
                 </div>
                 <div className="bg-white p-4 sm:p-6">
                     {isLoading ? (
@@ -84,7 +84,7 @@ const ViewModal = ({ order, onClose }) => {
                                 </thead>
                                 <tbody className="bg-white divide-y divide-gray-200">
 
-                                    {orderDetails.map((ord, index) => (
+                                    {saleDetails.map((ord, index) => (
                                         <tr key={ord.id} className="transition duration-300  ease-in-out hover:bg-gray-50">
                                             <td className="px-6 py-2 text-gray-800 whitespace-nowrap">{index + 1}</td>
                                             <td className="px-6 py-2 text-gray-800 whitespace-nowrap">{ord.categoryName}</td>
@@ -114,7 +114,7 @@ const ViewModal = ({ order, onClose }) => {
                         <button
                             type="button"
                             onClick={onClose}
-                            className="inline-flex justify-center items-center px-4 py-1.5 border border-transparent rounded-md shadow-sm text-base font-medium bg-gray-200 text-gray-800 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out"
+                            className="inline-flex justify-center items-center px-4 py-1.5 bsale bsale-transparent rounded-md shadow-sm text-base font-medium bg-gray-200 text-gray-800 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out"
                         >
                             Close
                         </button>

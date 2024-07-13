@@ -2,9 +2,9 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import Sidebar from '../src/Dashboard/components/Sidebar';
 import Header from '../src/Dashboard/components/Header';
 import MainComponent from '../src/Dashboard/components/MainContent';
-import Courses from './Dashboard/pages/Courses/Courses';
-import Students from './Dashboard/pages/Student/Students';
-import Instructors from './Dashboard/pages/Instructors';
+// import Courses from './Dashboard/pages/Courses/Courses';
+// import Students from './Dashboard/pages/Student/Students';
+// import Instructors from './Dashboard/pages/Instructors';
 import Overview from './Dashboard/pages/Overview';
 import { AuthProvider, useAuth } from './auth/AuthContext';
 import ProtectedRoute from './auth/ProtectedRoute';
@@ -22,6 +22,8 @@ import Order from './Dashboard/pages/Order/Order';
 import OrderList from './Dashboard/pages/Order/OrderList';
 import OrderRequestList from './Dashboard/Supplier/OrderRequestLiset';
 import Sales from './Dashboard/pages/Sale/Sales';
+import SaleList from './Dashboard/pages/Sale/SaleList';
+import CurrentStock from './Dashboard/pages/CurrentStock';
 
 function AppContent() {
   const location = useLocation();
@@ -69,6 +71,8 @@ function AppContent() {
                 <Route path="/orders" element={<ProtectedRoute allowedRoles={['admin']}><Order /></ProtectedRoute>} />
                 <Route path="/order-list" element={<ProtectedRoute allowedRoles={['admin']}><OrderList /></ProtectedRoute>} />
                 <Route path="/sales" element={<ProtectedRoute allowedRoles={['admin']}><Sales /></ProtectedRoute>} />
+                <Route path="/sales-list" element={<ProtectedRoute allowedRoles={['admin']}><SaleList /></ProtectedRoute>} />
+                <Route path="/current-stock" element={<ProtectedRoute allowedRoles={['admin']}><CurrentStock /></ProtectedRoute>} />
 
 
 

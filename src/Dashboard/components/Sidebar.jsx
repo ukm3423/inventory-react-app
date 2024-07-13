@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChalkboardTeacher, faTags, faBox, faUsers, faCog, faTachometerAlt, faList, faBold, faTableList, faCertificate, faCartShopping } from '@fortawesome/free-solid-svg-icons';
+import { faChalkboardTeacher, faTags, faBox, faUsers, faCog, faTachometerAlt, faList, faBold, faTableList, faCertificate, faCartShopping, faChartBar } from '@fortawesome/free-solid-svg-icons';
 import logo from "../assets/agg.png";
 import bg from "../assets/bg.png";
 
@@ -14,34 +14,33 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
     const [isMasterOpen, setIsMasterOpen] = useState(false);
     const [isOrdersOpen, setIsOrdersOpen] = useState(false);
     const [isSalesOpen, setIsSalesOpen] = useState(false);
+    const [isCurrentStockOpen, setIsCurrentStockOpen] = useState(false);
 
     const toggleMaster = () => {
         setIsMasterOpen(!isMasterOpen);
-
-        // Close the Orders and Sales dropdowns when opening Master
-        if (!isMasterOpen && (isOrdersOpen || isSalesOpen)) {
-            setIsOrdersOpen(false);
-            setIsSalesOpen(false);
-        }
+        closeOtherSections(isMasterOpen, setIsOrdersOpen, setIsSalesOpen, setIsCurrentStockOpen);
     };
 
     const toggleOrders = () => {
         setIsOrdersOpen(!isOrdersOpen);
-
-        // Close the Master and Sales dropdowns when opening Orders
-        if (!isOrdersOpen && (isMasterOpen || isSalesOpen)) {
-            setIsMasterOpen(false);
-            setIsSalesOpen(false);
-        }
+        closeOtherSections(isOrdersOpen, setIsMasterOpen, setIsSalesOpen, setIsCurrentStockOpen);
     };
 
     const toggleSales = () => {
         setIsSalesOpen(!isSalesOpen);
+        closeOtherSections(isSalesOpen, setIsMasterOpen, setIsOrdersOpen, setIsCurrentStockOpen);
+    };
 
-        // Close the Master and Orders dropdowns when opening Sales
-        if (!isSalesOpen && (isMasterOpen || isOrdersOpen)) {
-            setIsMasterOpen(false);
-            setIsOrdersOpen(false);
+    const toggleCurrentStock = () => {
+        setIsCurrentStockOpen(!isCurrentStockOpen);
+        closeOtherSections(isCurrentStockOpen, setIsMasterOpen, setIsOrdersOpen, setIsSalesOpen);
+    };
+
+    const closeOtherSections = (isOpen, setFirst, setSecond, setThird) => {
+        if (!isOpen) {
+            setFirst(false);
+            setSecond(false);
+            setThird(false);
         }
     };
 
@@ -299,6 +298,17 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                                         </li>
                                     </ul>
                                 )}
+                            </li>
+                            {/* Current Stock Section */}
+                            <li className="py-2">
+                                <NavLink
+                                    to="/current-stock"
+                                    className={`text-white flex items-center rounded-lg px-4 py-2 cursor-pointer transition-all duration-300 transform hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg ${location.pathname === '/current-stock' ? 'bg-gradient-to-r from-[#ff416c] to-[#ff4b2b] shadow-2xl' : ''}`}
+                                    onClick={closeSidebar}
+                                >
+                                    <FontAwesomeIcon icon={faChartBar} className="mr-3 text-lg" />
+                                    <span className="flex-1">Current Stock</span>
+                                </NavLink>
                             </li>
                         </>
                     )}
