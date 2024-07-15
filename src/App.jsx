@@ -24,6 +24,8 @@ import OrderRequestList from './Dashboard/Supplier/OrderRequestLiset';
 import Sales from './Dashboard/pages/Sale/Sales';
 import SaleList from './Dashboard/pages/Sale/SaleList';
 import CurrentStock from './Dashboard/pages/CurrentStock';
+import SaleReport from './Dashboard/pages/reports/sale/SaleReport';
+import PurchaseReport from './Dashboard/pages/reports/purchase/PurchaseReport';
 
 function AppContent() {
   const location = useLocation();
@@ -73,6 +75,9 @@ function AppContent() {
                 <Route path="/sales" element={<ProtectedRoute allowedRoles={['admin']}><Sales /></ProtectedRoute>} />
                 <Route path="/sales-list" element={<ProtectedRoute allowedRoles={['admin']}><SaleList /></ProtectedRoute>} />
                 <Route path="/current-stock" element={<ProtectedRoute allowedRoles={['admin']}><CurrentStock /></ProtectedRoute>} />
+                <Route path="/sale-reports" element={<ProtectedRoute allowedRoles={['admin']}><SaleReport /></ProtectedRoute>} />
+                <Route path="/purchase-reports" element={<ProtectedRoute allowedRoles={['admin']}><PurchaseReport /></ProtectedRoute>} />
+
 
 
 

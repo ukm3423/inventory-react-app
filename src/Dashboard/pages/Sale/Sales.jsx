@@ -316,7 +316,7 @@ const Sales = () => {
     <div className="p-6 m-6 bg-white rounded-lg shadow-md">
       <div className="grid grid-cols-1 lg:grid-cols-1 gap-6">
         <div className="flex justify-between items-center mb-4">
-          <h1 className="text-3xl font-semibold text-center text-gray-700">Sale Details : -</h1>
+          <h1 className="text-3xl font-semibold text-center text-gray-700">Sale Details :-</h1>
         </div>
         <div className="mb-4">
           <form onSubmit={handleSubmit} className="mb-8">

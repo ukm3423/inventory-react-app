@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChalkboardTeacher, faTags, faBox, faUsers, faCog, faTachometerAlt, faList, faBold, faTableList, faCertificate, faCartShopping, faChartBar } from '@fortawesome/free-solid-svg-icons';
+import { faChalkboardTeacher, faTags, faBox, faUsers, faCog, faTachometerAlt, faList, faBold, faTableList, faCertificate, faCartShopping, faChartBar, faBookOpen, faSwatchbook } from '@fortawesome/free-solid-svg-icons';
 import logo from "../assets/agg.png";
 import bg from "../assets/bg.png";
 
@@ -14,33 +14,41 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
     const [isMasterOpen, setIsMasterOpen] = useState(false);
     const [isOrdersOpen, setIsOrdersOpen] = useState(false);
     const [isSalesOpen, setIsSalesOpen] = useState(false);
+    const [isReportsOpen, setIsReportsOpen] = useState(false);
+
     const [isCurrentStockOpen, setIsCurrentStockOpen] = useState(false);
 
     const toggleMaster = () => {
         setIsMasterOpen(!isMasterOpen);
-        closeOtherSections(isMasterOpen, setIsOrdersOpen, setIsSalesOpen, setIsCurrentStockOpen);
+        closeOtherSections(isMasterOpen, setIsOrdersOpen, setIsSalesOpen, setIsCurrentStockOpen, setIsReportsOpen);
     };
 
     const toggleOrders = () => {
         setIsOrdersOpen(!isOrdersOpen);
-        closeOtherSections(isOrdersOpen, setIsMasterOpen, setIsSalesOpen, setIsCurrentStockOpen);
+        closeOtherSections(isOrdersOpen, setIsMasterOpen, setIsSalesOpen, setIsCurrentStockOpen , setIsReportsOpen);
     };
 
     const toggleSales = () => {
         setIsSalesOpen(!isSalesOpen);
-        closeOtherSections(isSalesOpen, setIsMasterOpen, setIsOrdersOpen, setIsCurrentStockOpen);
+        closeOtherSections(isSalesOpen, setIsMasterOpen, setIsOrdersOpen, setIsCurrentStockOpen, setIsReportsOpen);
     };
 
     const toggleCurrentStock = () => {
         setIsCurrentStockOpen(!isCurrentStockOpen);
-        closeOtherSections(isCurrentStockOpen, setIsMasterOpen, setIsOrdersOpen, setIsSalesOpen);
+        closeOtherSections(isCurrentStockOpen, setIsMasterOpen, setIsOrdersOpen, setIsSalesOpen, setIsReportsOpen);
     };
 
-    const closeOtherSections = (isOpen, setFirst, setSecond, setThird) => {
+    const toggleReports = () => {
+        setIsReportsOpen(!isReportsOpen);
+        closeOtherSections(isReportsOpen , setIsMasterOpen, setIsOrdersOpen, setIsCurrentStockOpen, setIsSalesOpen);
+    };
+
+    const closeOtherSections = (isOpen, setFirst, setSecond, setThird, setFourth) => {
         if (!isOpen) {
             setFirst(false);
             setSecond(false);
             setThird(false);
+            setFourth(false);
         }
     };
 
@@ -89,42 +97,6 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                     {/* Additional sidebar links */}
                     {role === 'ROLE_ADMIN' && (
                         <>
-                            {/* <li className="py-2">
-                                <NavLink
-                                    to="/courses"
-                                    className={({ isActive }) =>
-                                        `text-white flex items-center rounded-lg px-4 py-2 transition-all duration-300 transform ${isActive ? 'bg-gradient-to-r from-[#ff416c] to-[#ff4b2b] shadow-2xl scale-110' : 'hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg hover:scale-105'}`
-                                    }
-                                    onClick={closeSidebar}
-                                >
-                                    <FontAwesomeIcon icon={faBook} className="mr-3 text-lg" />
-                                    <span className="flex-1">Courses</span>
-                                </NavLink>
-                            </li>
-                            <li className="py-2">
-                                <NavLink
-                                    to="/students"
-                                    className={({ isActive }) =>
-                                        `text-white flex items-center rounded-lg px-4 py-2 transition-all duration-300 transform ${isActive ? 'bg-gradient-to-r from-[#ff416c] to-[#ff4b2b] shadow-2xl scale-110' : 'hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg hover:scale-105'}`
-                                    }
-                                    onClick={closeSidebar}
-                                >
-                                    <FontAwesomeIcon icon={faUserGraduate} className="mr-3 text-lg" />
-                                    <span className="flex-1">Students</span>
-                                </NavLink>
-                            </li>
-                            <li className="py-2">
-                                <NavLink
-                                    to="/instructors"
-                                    className={({ isActive }) =>
-                                        `text-white flex items-center rounded-lg px-4 py-2 transition-all duration-300 transform ${isActive ? 'bg-gradient-to-r from-[#ff416c] to-[#ff4b2b] shadow-2xl scale-110' : 'hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg hover:scale-105'}`
-                                    }
-                                    onClick={closeSidebar}
-                                >
-                                    <FontAwesomeIcon icon={faChalkboardTeacher} className="mr-3 text-lg" />
-                                    <span className="flex-1">Instructors</span>
-                                </NavLink>
-                            </li> */}
                             {/* Add more sidebar links for admin */}
                             {/* Master */}
                             <li className="py-2">
@@ -299,8 +271,64 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                                     </ul>
                                 )}
                             </li>
-                            {/* Current Stock Section */}
+
+
+                            {/* Reports dropdown */}
                             <li className="py-2">
+                                <div
+                                    className={`text-white flex items-center rounded-lg px-4 py-2 cursor-pointer transition-all duration-300 transform ${isReportsOpen
+                                        ? 'bg-gradient-to-r from-[#ff416c] to-[#ff4b2b] shadow-2xl'
+                                        : 'hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg'
+                                        }`}
+                                    onClick={toggleReports}
+                                >
+                                    <FontAwesomeIcon icon={faSwatchbook} className="mr-3 text-lg" />
+                                    <span className="flex-1">Reports</span>
+                                    <svg
+                                        className={`w-4 h-4 ml-auto transition-transform ${isOrdersOpen ? 'transform rotate-90' : ''}`}
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            fillRule="evenodd"
+                                            d="M6.293 5.293a1 1 0 011.414 0L10 8.586l2.293-2.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
+                                            clipRule="evenodd"
+                                        />
+                                    </svg>
+                                </div>
+
+                                {/* Orders dropdown items */}
+                                {isReportsOpen && (
+                                    <ul className="pl-4 mt-2">
+                                        <li className="py-2">
+                                            <NavLink
+                                                to="/purchase-reports"
+                                                className={`flex items-center rounded-lg px-4 py-1.5 hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg ${location.pathname === '/purchase-reports' ? 'bg-white text-gray-900 rounded-md' : 'text-white'
+                                                    }`}
+                                                onClick={closeSidebar}
+                                            >
+                                                <FontAwesomeIcon icon={faTags} className="mr-3" />
+                                                Purchase Reports
+                                            </NavLink>
+                                        </li>
+                                        <li className="py-2">
+                                            <NavLink
+                                                to="/sale-reports"
+                                                className={`flex items-center rounded-lg px-4 py-1.5 hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg ${location.pathname === '/sale-reports' ? 'bg-white text-gray-900 rounded-md' : 'text-white'
+                                                    }`}
+                                                onClick={closeSidebar}
+                                            >
+                                                <FontAwesomeIcon icon={faBox} className="mr-3" />
+                                                Sale Reports
+                                            </NavLink>
+                                        </li>
+                                    </ul>
+                                )}
+                            </li>
+
+                             {/* Current Stock Section */}
+                             <li className="py-2">
                                 <NavLink
                                     to="/current-stock"
                                     className={`text-white flex items-center rounded-lg px-4 py-2 cursor-pointer transition-all duration-300 transform hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg ${location.pathname === '/current-stock' ? 'bg-gradient-to-r from-[#ff416c] to-[#ff4b2b] shadow-2xl' : ''}`}
@@ -310,6 +338,8 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                                     <span className="flex-1">Current Stock</span>
                                 </NavLink>
                             </li>
+
+
                         </>
                     )}
 
