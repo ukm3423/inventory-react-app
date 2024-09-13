@@ -25,7 +25,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
 
     const toggleOrders = () => {
         setIsOrdersOpen(!isOrdersOpen);
-        closeOtherSections(isOrdersOpen, setIsMasterOpen, setIsSalesOpen, setIsCurrentStockOpen , setIsReportsOpen);
+        closeOtherSections(isOrdersOpen, setIsMasterOpen, setIsSalesOpen, setIsCurrentStockOpen, setIsReportsOpen);
     };
 
     const toggleSales = () => {
@@ -40,7 +40,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
 
     const toggleReports = () => {
         setIsReportsOpen(!isReportsOpen);
-        closeOtherSections(isReportsOpen , setIsMasterOpen, setIsOrdersOpen, setIsCurrentStockOpen, setIsSalesOpen);
+        closeOtherSections(isReportsOpen, setIsMasterOpen, setIsOrdersOpen, setIsCurrentStockOpen, setIsSalesOpen);
     };
 
     const closeOtherSections = (isOpen, setFirst, setSecond, setThird, setFourth) => {
@@ -304,7 +304,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                                         <li className="py-2">
                                             <NavLink
                                                 to="/purchase-reports"
-                                                className={`flex items-center rounded-lg px-4 py-1.5 hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg ${location.pathname === '/purchase-reports' ? 'bg-white text-gray-900 rounded-md' : 'text-white'
+                                                className={`flex items-center rounded-lg px-4 py-1.5 hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg ${location.pathname.startsWith('/purchase-reports') ? 'bg-white text-gray-900 rounded-md' : 'text-white'
                                                     }`}
                                                 onClick={closeSidebar}
                                             >
@@ -315,7 +315,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                                         <li className="py-2">
                                             <NavLink
                                                 to="/sale-reports"
-                                                className={`flex items-center rounded-lg px-4 py-1.5 hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg ${location.pathname === '/sale-reports' ? 'bg-white text-gray-900 rounded-md' : 'text-white'
+                                                className={`flex items-center rounded-lg px-4 py-1.5 hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg ${location.pathname.startsWith('/sale-reports') ? 'bg-white text-gray-900 rounded-md' : 'text-white'
                                                     }`}
                                                 onClick={closeSidebar}
                                             >
@@ -327,8 +327,8 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                                 )}
                             </li>
 
-                             {/* Current Stock Section */}
-                             <li className="py-2">
+                            {/* Current Stock Section */}
+                            <li className="py-2">
                                 <NavLink
                                     to="/current-stock"
                                     className={`text-white flex items-center rounded-lg px-4 py-2 cursor-pointer transition-all duration-300 transform hover:bg-gradient-to-r hover:from-[#ff416c] hover:to-[#ff4b2b] hover:shadow-lg ${location.pathname === '/current-stock' ? 'bg-gradient-to-r from-[#ff416c] to-[#ff4b2b] shadow-2xl' : ''}`}
